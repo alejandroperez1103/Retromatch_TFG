@@ -1,0 +1,193 @@
+/* src/components/Login.css (Versión Pro, Rojo y Blanco) */
+
+/* Variables de Marca - RetroMatch Pro Red */
+:root {
+  /* Rojo Material sofisticado */
+  --primary-color: #e53935; /* Red 600 */
+  --primary-hover: #c62828; /* Red 800 */
+  --bg-card: #ffffff;
+  --text-main: #2c3e50; /* Un tono un poco más azulado/elegante que el negro puro */
+  --text-muted: #6c757d;
+  --input-bg: #f8f9fa;
+  --border-color: #dee2e6; /* Añadida variable de borde que faltaba */
+  
+  /* Anillo de enfoque en rosa pálido */
+  --accent-bg: rgba(229, 57, 53, 0.15); 
+  
+  /* Sombras más suaves y modernas */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --transition: all 0.3s ease;
+}
+
+/* Contenedor principal */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  padding: 20px;
+  background-color: #f4f6f8; /* Fondo sutil para que la tarjeta blanca resalte */
+}
+
+/* La Tarjeta de Login */
+.login-form {
+  background: var(--bg-card);
+  padding: 40px 35px; /* Un poco más de aire en los laterales */
+  border-radius: 12px; /* Ligeramente menos curvo, más formal */
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 400px;
+  transition: var(--transition);
+}
+
+/* Título */
+.login-form h2 {
+  color: var(--text-main);
+  font-size: 24px;
+  margin-bottom: 5px;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: -0.5px; /* Le da un toque más moderno al título */
+}
+
+/* --- ESTILOS DE LOS INPUTS --- */
+
+.input-with-icon {
+  position: relative; 
+  display: flex;
+  width: 100%;
+}
+
+.login-form input {
+  box-sizing: border-box; /* Crucial: evita que el padding rompa el ancho */
+  width: 100%; 
+  padding: 14px 16px; /* Padding un poco más amplio, estándar actual */
+  border: 1px solid var(--border-color); /* Usamos la variable corregida */
+  border-radius: 8px;
+  background-color: var(--input-bg);
+  font-size: 15px;
+  color: var(--text-main);
+  transition: var(--transition);
+  outline: none;
+}
+
+.input-with-icon input {
+  padding-right: 45px;
+}
+
+/* Efecto Focus global */
+.login-form input:focus {
+  border-color: var(--primary-color);
+  background-color: #fff;
+  box-shadow: 0 0 0 4px var(--accent-bg);
+}
+
+/* El Botón que tiene el icono (Ojo de contraseña) */
+.password-toggle-btn {
+  position: absolute; 
+  right: 12px; 
+  top: 50%; 
+  transform: translateY(-50%); 
+  background: none; 
+  border: none; 
+  cursor: pointer;
+  padding: 0;
+  color: var(--text-muted); 
+  font-size: 18px; 
+  transition: var(--transition);
+  opacity: 0.7; 
+  display: flex; /* Centra el icono en sí mismo */
+  align-items: center;
+  justify-content: center;
+}
+
+.password-toggle-btn:hover {
+  color: var(--primary-color); 
+  opacity: 1;
+}
+
+/* --- BOTÓN PRINCIPAL Y ENLACES --- */
+
+/* Botón Principal (Rojo) - Opción Centrado */
+.btn-primary {
+  align-self: center; /* Centra el botón en sí mismo respecto a la tarjeta */
+  width: 60%; /* Ajusta este porcentaje o usa píxeles (ej: 200px) a tu gusto */
+  
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  gap: 10px; 
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-top: 10px;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(229, 57, 53, 0.25);
+}
+
+/* Texto de "Regístrate aquí" */
+.toggle-link {
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-muted);
+  cursor: pointer;
+  margin-top: 5px;
+  transition: var(--transition);
+  font-weight: 500;
+}
+
+.toggle-link:hover {
+  color: var(--primary-color);
+  text-decoration: underline;
+}
+
+/* --- MENSAJES DE ESTADO --- */
+.status-message {
+  padding: 12px;   
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-size: 14px;  
+  text-align: center;
+  font-weight: 500;
+  animation: fadeIn 0.4s ease; 
+}
+
+.status-message.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.status-message.error {
+  background-color: #fdf2f2; /* Rojos más modernos para el error */
+  color: #c62828;
+  border: 1px solid #f8d7da;
+}
+
+/* Responsividad básica */
+@media (max-width: 480px) {
+  .login-form {
+    padding: 30px 20px;
+    border-radius: 0; /* En móviles muy pequeños, a veces queda mejor sin bordes si ocupa toda la pantalla, pero puedes omitirlo */
+  }     
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}

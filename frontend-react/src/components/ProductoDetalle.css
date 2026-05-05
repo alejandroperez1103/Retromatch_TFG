@@ -1,0 +1,315 @@
+/* ==========================================================================
+   CONTENEDOR PRINCIPAL Y NAVEGACIÓN
+   ========================================================================== */
+   .producto-detalle-container {
+    padding: 2rem 1rem 6rem 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+  
+  /* Botón Volver - Estilo Píldora con Animación Izquierda */
+  .btn-volver-catalogo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: #111; 
+    color: #fff;
+    border: none;
+    border-radius: 30px; 
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 3rem; 
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  
+  .btn-volver-catalogo:hover {
+    background: var(--rm-red-vibrant, #D11D25); 
+    color: white;
+    box-shadow: 0 6px 16px rgba(209, 29, 37, 0.3);
+    transform: translateX(-5px); 
+  }
+  
+  /* ==========================================================================
+     GRID PRINCIPAL
+     ========================================================================== */
+  .detalle-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem; 
+    align-items: start;
+  }
+  
+  /* ==========================================================================
+     GALERÍA DE IMÁGENES (CON ZOOM)
+     ========================================================================== */
+  .imagen-principal-box {
+    background-color: #fcfcfc;
+    border: 1px solid #f0f0f0;
+    border-radius: 16px;
+    padding: 2rem;
+    height: 550px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    overflow: hidden; /* Evita que la imagen se salga al hacer zoom */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+  }
+  
+  .imagen-principal {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+    will-change: transform;
+  }
+  
+  /* Efecto Zoom Profesional */
+  .imagen-principal-box:hover .imagen-principal {
+    transform: scale(1.15);
+    cursor: crosshair; 
+  }
+  
+  .miniaturas-lista {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+  
+  .miniatura {
+    width: 85px;
+    height: 85px;
+    background-color: #fff;
+    border-radius: 12px;
+    object-fit: contain;
+    padding: 0.5rem;
+    cursor: pointer;
+    border: 2px solid #eaeaea;
+    transition: all 0.3s ease;
+  }
+  
+  .miniatura:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  
+  .miniatura.activa {
+    border-color: var(--rm-red-vibrant, #D11D25);
+    box-shadow: 0 0 0 1px var(--rm-red-vibrant, #D11D25);
+  }
+  
+  /* ==========================================================================
+     INFORMACIÓN DEL PRODUCTO
+     ========================================================================== */
+  .detalle-categoria {
+    color: var(--rm-red-vibrant, #D11D25);
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  
+  .detalle-titulo {
+    font-size: 2.8rem;
+    font-weight: 900;
+    margin: 0;
+    line-height: 1.1;
+    color: #111;
+    letter-spacing: -1px;
+  }
+  
+  /* ==========================================================================
+     SECCIÓN DE PRECIO (MEJORADA)
+     ========================================================================== */
+  .precio-container {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+    padding: 1.25rem;
+    background: #fdfdfd;
+    border-left: 4px solid var(--rm-red-vibrant, #D11D25);
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  }
+  
+  .detalle-precio-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .detalle-precio {
+    font-size: 2.6rem;
+    font-weight: 900;
+    margin: 0;
+    color: #111;
+    line-height: 1;
+  }
+  
+  .precio-iva {
+    font-size: 0.85rem;
+    color: #777;
+    font-weight: 500;
+    margin-top: 0.3rem;
+  }
+  
+  .badge-stock {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: #e8f5e9; 
+    color: #2e7d32; 
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  /* ==========================================================================
+     SELECCIÓN DE TALLAS
+     ========================================================================== */
+  .detalle-tallas {
+    margin: 2.5rem 0;
+  }
+  
+  .detalle-tallas h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .tallas-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  
+  .btn-talla {
+    background: white;
+    border: 1px solid #dcdcdc;
+    min-width: 65px;
+    height: 50px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .btn-talla:hover {
+    border-color: #111;
+    color: #111;
+  }
+  
+  .btn-talla.seleccionada {
+    background: #111;
+    color: white;
+    border-color: #111;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  }
+  
+  .btn-talla:disabled {
+    background: #f5f5f5;
+    color: #aaa;
+    text-decoration: line-through;
+    cursor: not-allowed;
+    border-color: #eee;
+  }
+  
+  /* ==========================================================================
+     EXTRAS (HISTORIA, GARANTÍAS)
+     ========================================================================== */
+  .detalle-descripcion {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #eaeaea;
+  }
+  
+  .detalle-descripcion h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #111;
+  }
+  
+  .detalle-descripcion p {
+    color: #555;
+    line-height: 1.7;
+    font-size: 1.05rem;
+  }
+  
+  .lista-garantias {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .lista-garantias li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    color: #444;
+    font-weight: 500;
+  }
+  
+  /* ==========================================================================
+     BOTÓN COMPRAR (GIGANTE Y PROFESIONAL)
+     ========================================================================== */
+  .btn-comprar-gigante {
+    width: 100%;
+    background: var(--rm-red-vibrant, #D11D25);
+    color: white;
+    border: none;
+    padding: 1.25rem;
+    font-size: 1.15rem;
+    font-weight: 800;
+    border-radius: 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+    box-shadow: 0 8px 20px rgba(209, 29, 37, 0.25);
+  }
+  
+  .btn-comprar-gigante:hover {
+    background: #a1161d;
+    box-shadow: 0 10px 25px rgba(209, 29, 37, 0.35);
+    transform: translateY(-2px);
+  }
+  
+  .btn-comprar-gigante:active {
+    transform: translateY(1px);
+    box-shadow: 0 4px 10px rgba(209, 29, 37, 0.2);
+  }
+  
+  /* Loader Simple */
+  .detalle-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+    font-size: 1.2rem;
+    color: #555;
+  }

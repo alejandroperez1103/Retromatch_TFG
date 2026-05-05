@@ -1,0 +1,241 @@
+/* ==========================================================================
+   VARIABLES DE COLOR Y RESET
+   ========================================================================== */
+   :root {
+    --rm-red-vibrant: #D11D25;   
+    --rm-red-dark: #A1161D;       
+    --rm-black: #000000;         
+    --rm-white: #FFFFFF;         
+    --rm-grey-dark: #1a1a1a; /* Un gris un poco más profundo y elegante */
+    --rm-accent-gold: #FFD700;    
+  }
+  
+  .navbar-complete * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+  
+  .navbar-complete .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+  }
+  
+  .navbar-complete a {
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  
+  /* ==========================================================================
+     1. PRE-HEADER (Barrita Superior Oscura)
+     ========================================================================== */
+  .pre-header {
+    background-color: var(--rm-grey-dark);
+    color: #ccc; /* Texto ligeramente atenuado para no robar atención */
+    padding: 0.6rem 0;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+  }
+  
+  .pre-header-right {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  
+  .login-small-link {
+    color: var(--rm-white);
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  
+  .login-small-link:hover {
+    color: var(--rm-accent-gold);
+  }
+  
+  .user-info {
+    font-weight: 700;
+    color: var(--rm-accent-gold); 
+  }
+  
+  /* ==========================================================================
+     2. MAIN HEADER (Cinta Roja Principal)
+     ========================================================================== */
+  .main-header {
+    background-color: var(--rm-red-vibrant);
+    padding: 1.5rem 0;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.15);
+    position: relative;
+    z-index: 10;
+  }
+  
+  .navbar-logo {
+    color: var(--rm-white); 
+    font-size: 2.5rem;
+    font-weight: 900;
+    letter-spacing: -1.5px;
+    text-transform: uppercase;
+  }
+  
+  .navbar-logo:hover {
+    transform: scale(1.02);
+  }
+  
+  /* --- WIDGET DEL CARRITO PREMIUM (Estilo Minimalista) --- */
+  .cart-widget-premium {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--rm-white); 
+    padding: 0.5rem;
+    transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  
+  .cart-widget-premium:hover {
+    transform: translateY(-3px); 
+  }
+  
+  .cart-icon-premium {
+    font-size: 1.8rem; 
+  }
+  
+  /* Burbuja de notificación estilo App Nativa */
+  .cart-badge {
+    position: absolute;
+    top: 2px;
+    right: -2px;
+    background-color: var(--rm-black); 
+    color: var(--rm-white);
+    font-size: 0.7rem;
+    font-weight: 800;
+    height: 20px;
+    min-width: 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
+    border: 2px solid var(--rm-red-vibrant); /* Se funde con el fondo rojo */
+  }
+  
+  /* ==========================================================================
+     3. MAIN NAV (Barra Negra Inferior)
+     ========================================================================== */
+  .main-nav {
+    background-color: var(--rm-black);
+    padding: 0;
+    position: relative;
+    z-index: 5;
+  }
+  
+  /* Contenedor centralizado y relativo para aislar los botones */
+  .main-nav .container {
+    display: flex;
+    justify-content: center; /* CENTRADO PERFECTO DE CATEGORÍAS */
+    align-items: center;
+    width: 100%;
+    position: relative;
+    min-height: 55px; /* Altura fija para dar solidez */
+  }
+  
+  .navbar-links {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem; /* Espaciado moderno entre enlaces */
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Enlaces principales */
+  .navbar-links a {
+    display: block;
+    padding: 1rem 0.5rem;
+    color: var(--rm-white);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    position: relative; /* Necesario para la animación del subrayado */
+  }
+  
+  /* Animación de "Subrayado Mágico" (Efecto Nike/Zara) */
+  .navbar-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 12px;
+    left: 50%;
+    background-color: var(--rm-accent-gold);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+  }
+  
+  .navbar-links a:hover::after {
+    width: 80%; /* Al pasar el ratón, la línea crece desde el centro */
+  }
+  
+  .navbar-links a:hover {
+    color: var(--rm-accent-gold);
+  }
+  
+  /* ==========================================================================
+     4. BOTONES DE ACCIÓN (Flotantes a la derecha)
+     ========================================================================== */
+  .nav-actions-group {
+    position: absolute; /* CLAVE: Aísla los botones del centrado de los enlaces */
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem; 
+  }
+  
+  /* Botón Logout (Píldora minimalista) */
+  .btn-logout-small {
+    background-color: transparent;
+    color: var(--rm-red-vibrant);
+    border: 1px solid var(--rm-red-vibrant);
+    padding: 0.5rem 1.2rem;
+    border-radius: 20px; /* Estilo moderno */
+    cursor: pointer;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+  
+  .btn-logout-small:hover {
+    background-color: var(--rm-red-vibrant);
+    color: var(--rm-white);
+    box-shadow: 0 4px 12px rgba(209, 29, 37, 0.2);
+  }
+  
+  /* Botón Admin (Píldora destacada) */
+  .admin-link {
+    color: #111 !important;
+    background-color: var(--rm-accent-gold);
+    font-weight: 800 !important;
+    border: none;
+    padding: 0.5rem 1.2rem;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.2);
+  }
+  
+  .admin-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+  }

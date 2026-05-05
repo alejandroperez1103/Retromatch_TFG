@@ -1,0 +1,60 @@
+/* Importamos fuentes premium de Google Fonts para un look profesional */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800;900&family=Open+Sans:wght@400;600&display=swap');
+
+/* Reinicio universal */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Paleta de colores y variables globales de RetroMatch */
+:root {
+  --rm-red-vibrant: #D11D25;   
+  --rm-red-dark: #A1161D;       
+  --rm-black: #111111;         
+  --rm-white: #FFFFFF;         
+  --rm-grey-bg: #F8F9FA;      
+  --rm-border: #e5e4e7;
+  --rm-grey-text: #555555;
+  --rm-accent-gold: #FFD700;    
+  
+  --font-heading: 'Montserrat', sans-serif;
+  --font-body: 'Open Sans', sans-serif;
+}
+
+/* EL BODY: 
+  Le quitamos el flex centrado que tenías antes para que la web 
+  fluya de arriba hacia abajo de forma natural.
+*/
+body {
+  font-family: var(--font-body);
+  background-color: var(--rm-grey-bg);
+  color: var(--rm-black);
+  min-height: 100vh;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased; 
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%; 
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Títulos con personalidad deportiva y en mayúsculas */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--rm-black);
+  text-transform: uppercase;
+}
+
+/* Clase de utilidad para centrar el contenido principal sin romper el header */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  width: 100%;
+}

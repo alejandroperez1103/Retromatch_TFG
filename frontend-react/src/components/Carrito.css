@@ -1,0 +1,314 @@
+/* ==========================================================================
+   VARIABLES Y CONTENEDOR PRINCIPAL
+   ========================================================================== */
+   .carrito-container {
+    max-width: 1100px; /* Un poco más estrecho para mantener la legibilidad */
+    margin: 3rem auto;
+    padding: 0 1rem;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+  
+  .carrito-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2.5rem;
+    border-bottom: 1px solid #eaeaea;
+    padding-bottom: 1rem;
+  }
+  
+  .carrito-header h2 {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: #111;
+    text-transform: uppercase;
+    margin: 0;
+    letter-spacing: -1px;
+  }
+  
+  /* ==========================================================================
+     TEMPORIZADOR
+     ========================================================================== */
+  .timer-box {
+    background-color: #f8f8f8;
+    color: #333;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    border: 1px solid #eaeaea;
+  }
+  
+  .timer-box.danger {
+    background-color: #fff0f0;
+    color: var(--rm-red-vibrant, #D11D25);
+    border-color: var(--rm-red-vibrant, #D11D25);
+  }
+  
+  .timer {
+    font-variant-numeric: tabular-nums; /* Evita que el texto salte al cambiar los números */
+    font-weight: 800;
+  }
+  
+  /* ==========================================================================
+     LAYOUT DEL CARRITO (Grid)
+     ========================================================================== */
+  .carrito-content {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  
+  /* ==========================================================================
+     ITEMS DEL CARRITO (Estilo minimalista)
+     ========================================================================== */
+  .carrito-items {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .cart-item {
+    display: flex;
+    padding: 2rem 0;
+    border-bottom: 1px solid #eaeaea;
+    gap: 1.5rem;
+  }
+  
+  .cart-item:first-child {
+    padding-top: 0;
+  }
+  
+  .cart-item-img-wrapper {
+    background-color: #f5f5f5; /* Fondo elegante para destacar la camiseta */
+    border-radius: 12px;
+    width: 140px;
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    flex-shrink: 0;
+  }
+  
+  .cart-item-img-wrapper img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  
+  .cart-item-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .cart-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.25rem;
+  }
+  
+  .cart-item-header h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #111;
+    margin: 0;
+  }
+  
+  .item-precio {
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: #111;
+    margin: 0;
+  }
+  
+  .item-season, .item-talla {
+    color: #666;
+    font-size: 0.95rem;
+    margin: 0.2rem 0;
+  }
+  
+  .item-talla strong {
+    color: #111;
+  }
+  
+  .cart-item-actions {
+    margin-top: auto; /* Empuja el botón hacia abajo */
+    padding-top: 1rem;
+  }
+  
+  .btn-eliminar {
+    background: none;
+    border: none;
+    color: #777;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.2s;
+  }
+  
+  .btn-eliminar:hover {
+    color: var(--rm-red-vibrant, #D11D25);
+  }
+  
+  /* ==========================================================================
+     RESUMEN DEL PEDIDO (Sticky Box)
+     ========================================================================== */
+  .carrito-resumen-container {
+    position: sticky;
+    top: 2rem; /* Se queda pegado al hacer scroll */
+  }
+  
+  .carrito-resumen {
+    background-color: #fafafa;
+    padding: 2rem;
+    border-radius: 16px;
+    border: 1px solid #eaeaea;
+  }
+  
+  .carrito-resumen h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0 0 1.5rem 0;
+    color: #111;
+  }
+  
+  .resumen-fila {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: #444;
+  }
+  
+  .resumen-fila.total {
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: #111;
+    border-top: 1px solid #ddd;
+    padding-top: 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .iva-incluido {
+    font-size: 0.8rem;
+    color: #777;
+    text-align: right;
+    margin-top: 0;
+    margin-bottom: 2rem;
+  }
+  
+  /* Botones del resumen */
+  .btn-pagar {
+    width: 100%;
+    background-color: var(--rm-red-vibrant, #D11D25);
+    color: white;
+    border: none;
+    padding: 1.25rem;
+    font-size: 1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border-radius: 30px; /* Forma de píldora Premium */
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(209, 29, 37, 0.2);
+  }
+  
+  .btn-pagar:hover {
+    background-color: var(--rm-red-dark, #A1161D);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(209, 29, 37, 0.3);
+  }
+  
+  .btn-vaciar {
+    width: 100%;
+    background-color: transparent;
+    color: #111;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border-radius: 30px;
+    transition: all 0.2s;
+  }
+  
+  .btn-vaciar:hover {
+    border-color: #111;
+    background-color: #f5f5f5;
+  }
+  
+  /* ==========================================================================
+     ESTADO VACÍO
+     ========================================================================== */
+  .carrito-vacio {
+    text-align: center;
+    padding: 6rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .icono-bolsa-vacia {
+    font-size: 4rem;
+    color: #ccc;
+    margin-bottom: 1rem;
+  }
+  
+  .btn-volver-catalogo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    background-color: #111;
+    color: white;
+    padding: 1rem 2rem;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 700;
+    transition: transform 0.2s, background-color 0.2s;
+  }
+  
+  .btn-volver-catalogo:hover {
+    background-color: var(--rm-red-vibrant, #D11D25);
+    transform: translateY(-2px);
+  }
+  
+  /* ==========================================================================
+     RESPONSIVE
+     ========================================================================== */
+  @media (max-width: 900px) {
+    .carrito-content {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    
+    .carrito-resumen-container {
+      position: static; /* Quita el sticky en móviles */
+    }
+  }
+  
+  @media (max-width: 500px) {
+    .cart-item {
+      flex-direction: column;
+    }
+    
+    .cart-item-img-wrapper {
+      width: 100%;
+      height: 200px;
+    }
+  }

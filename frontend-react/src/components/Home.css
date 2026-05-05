@@ -1,0 +1,232 @@
+/* --- Banner Hero Premium (Altura optimizada y letras libres) --- */
+.hero-section {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.7)), 
+              url('https://i.redd.it/quais-s%C3%A3o-as-fotos-mais-ic%C3%B4nicas-da-hist%C3%B3ria-do-futebol-v0-1187ndajfq5f1.jpg?width=2048&format=pjpg&auto=webp&s=6572be69f1eec9d6ae36daa60c5a59696cbb8a30'); 
+  background-size: cover;
+  background-position: center 25%;
+  background-attachment: fixed;
+  min-height: 55vh; 
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border-bottom: 4px solid var(--rm-red-vibrant, #ff3333); 
+}
+
+.hero-content {
+  text-align: center;
+  max-width: 1200px; 
+  width: 100%;
+  animation: fadeUp 1s ease-out forwards;
+}
+
+.hero-content h1 {
+  font-size: 5rem; 
+  font-weight: 900;
+  letter-spacing: 3px;
+  margin-bottom: 1rem;
+  color: #FFFFFF !important; 
+  text-shadow: 2px 4px 15px rgba(0, 0, 0, 0.9);
+}
+
+.hero-content p {
+  font-size: 1.5rem;
+  color: #F8F9FA !important; 
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-shadow: 1px 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Títulos de Sección --- */
+.section-title {
+  text-align: center;
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+}
+
+.section-title h2 {
+  font-size: 2.5rem;
+  color: var(--rm-black, #1a1a1a);
+  font-weight: 900;
+  letter-spacing: -0.5px;
+}
+
+.title-underline {
+  width: 80px;
+  height: 4px;
+  background-color: var(--rm-red-vibrant, #ff3333);
+  margin: 0.8rem auto 0;
+  border-radius: 2px;
+}
+
+/* =========================================
+   NUEVO GRID DE PRODUCTOS (Perfectamente alineado)
+   ========================================= */
+
+.productos-grid {
+  display: grid;
+  /* El minmax(320px) asegura que caben entre 2 y 3 tarjetas en pantallas grandes */
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2.5rem;
+  padding-bottom: 6rem;
+  max-width: 1200px; /* Mismo ancho que el header para mantener proporción */
+  margin: 0 auto;    /* Centra la cuadrícula en la pantalla */
+}
+
+/* La tarjeta: Estructura Flex para empujar el botón abajo */
+.producto-card {
+  background: var(--rm-white, #ffffff);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #f0f0f0;
+}
+
+.producto-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* EL SECRETO DE LAS IMÁGENES: Altura fija + Object-fit Contain */
+.producto-imagen {
+  width: 100%;
+  height: 280px; /* Mantenemos la altura fija para que las tarjetas sigan alineadas */
+  background-color: #f8f8f8; /* Un fondo gris claro ayuda si la imagen no llena todo el espacio */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem; /* Añadimos un poco de 'aire' alrededor de la camiseta */
+}
+
+.producto-imagen img {
+  width: 100%;
+  height: 100%;
+  /* CAMBIO CLAVE AQUÍ: 'contain' asegura que la imagen entera sea visible, sin recortes */
+  object-fit: contain; 
+}
+
+/* Contenedor de la información: Flex-grow empuja el contenido */
+.producto-info {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Esto hace que el contenedor crezca y empuje el botón al fondo */
+}
+
+.producto-anio {
+  color: #888;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.producto-equipo {
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin: 0 0 1rem 0;
+  color: var(--rm-black, #1a1a1a);
+  line-height: 1.2;
+}
+
+/* Precio: margin-top: auto lo pega justo encima del botón */
+.producto-precio {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--rm-red-vibrant, #ff3333);
+  margin-top: auto; 
+  margin-bottom: 1.5rem;
+}
+
+/* Botón de comprar adaptado al nuevo diseño */
+.btn-comprar {
+  background-color: var(--rm-black, #1a1a1a);
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.btn-comprar:hover {
+  background-color: var(--rm-red-vibrant, #ff3333);
+  transform: scale(1.02);
+}
+
+/* --- Estado Vacío (Empty State) --- */
+.sin-productos {
+  grid-column: 1 / -1; 
+  background: var(--rm-white, #ffffff);
+  padding: 4rem 2rem;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); 
+  border: 1px solid var(--rm-border, #eee);
+  max-width: 600px;
+  margin: 0 auto; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: #666;
+}
+
+.sin-productos::before {
+  content: "👕";
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+/* =========================================
+   ANIMACIÓN DE CARGA (LOADING)
+   ========================================= */
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh; /* Ocupa al menos la mitad de la pantalla para verse centrado */
+  gap: 1rem;
+}
+
+.balon-giratorio {
+  font-size: 4rem; /* Tamaño del balón */
+  display: inline-block;
+  /* La magia del giro: 1.5 segundos, velocidad constante, repetición infinita */
+  animation: girarBalon 1.5s linear infinite; 
+}
+
+.loader-container p {
+  font-size: 1.2rem;
+  color: #555;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+/* Los "fotogramas" de la animación: de 0 a 360 grados */
+@keyframes girarBalon {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

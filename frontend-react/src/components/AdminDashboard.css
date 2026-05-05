@@ -1,0 +1,161 @@
+.admin-container {
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 1rem;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.admin-table th {
+  background: #1a1a1a;
+  color: white;
+  padding: 1rem;
+  text-align: left;
+}
+
+.admin-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.acciones-td {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-edit { background: #ffcc00; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+.btn-delete { background: #ff4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+
+/* =========================================
+   ESTILO DEL FORMULARIO DE ADMIN
+   ========================================= */
+.admin-header {
+  display: flex;
+  justify-content: center; /* Centra el contenido horizontalmente */
+  align-items: center;
+  margin-bottom: 3rem;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 1rem;
+  position: relative; /* Necesario para posicionar el botón a la derecha luego si hace falta */
+}
+
+/* Y le damos un poco de estilo al h2 dentro del header para que destaque */
+.admin-header h2 {
+  font-size: 2rem;
+  color: #1a1a1a;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+/* Agrupación de Label + Input para que queden apilados */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: left;
+}
+
+/* Estilo de los títulos de cada campo */
+.form-group label {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Para que la categoría y la descripción ocupen todo el ancho (las 2 columnas) */
+.description-group {
+  grid-column: 1 / -1;
+}
+
+/* Estilo unificado para inputs, textareas y el nuevo select */
+.admin-form input, 
+.admin-form textarea, 
+.admin-select {
+  padding: 0.8rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box; /* VITAL para que no se salgan de su caja */
+  transition: border-color 0.3s;
+}
+
+.admin-form input:focus, 
+.admin-form textarea:focus, 
+.admin-select:focus {
+  outline: none;
+  border-color: #ff3333; /* El rojo de tu marca al hacer clic */
+}
+
+.admin-form textarea {
+  resize: vertical; /* Solo deja estirar la caja hacia abajo */
+  min-height: 120px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end; 
+  gap: 1rem;
+  margin-top: 1rem;
+  border-top: 2px solid #eee;
+  padding-top: 1.5rem;
+}
+
+.btn-primary,
+.btn-secondary {
+  width: 220px; /* ANCHO FIJO: Ni un píxel más, ni uno menos para ambos */
+  box-sizing: border-box; /* Evita que los márgenes deformen el botón */
+  text-align: center;
+  padding: 0.8rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  border: none;
+  transition: background 0.3s, transform 0.1s;
+}
+
+/* Colores de cada uno */
+.btn-primary {
+  background: #ff3333; 
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #cc0000;
+}
+
+.btn-secondary {
+  background: #e0e0e0; 
+  color: #333;
+}
+
+.btn-secondary:hover {
+  background: #cccccc;
+}
