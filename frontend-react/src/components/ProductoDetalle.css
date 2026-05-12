@@ -313,3 +313,21 @@
     font-size: 1.2rem;
     color: #555;
   }
+  .badge-ultima {
+  display: block;
+  font-size: 0.6rem;
+  color: #ff3333;
+  font-weight: 800;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+.badge-stock.disponible {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.badge-stock.agotado {
+  background: #ffebee;
+  color: #c62828;
+}

@@ -1,6 +1,7 @@
-import { useState, useEffect, useContext } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { CartContext } from '../context/CartContext.jsx';
+import { useState, useEffect } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import productService from '../services/productService';
+import StatusAlert from './StatusAlert';
 import './Home.css';
 import { FiShoppingCart } from 'react-icons/fi';
 import { GiSoccerBall } from 'react-icons/gi';
@@ -10,7 +11,8 @@ const CategoriaView = () => {
   const { nombreCategoria } = useParams();
   const [productosFiltrados, setProductosFiltrados] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { agregarAlCarrito } = useContext(CartContext);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const titulos = {
     'Mundial86': "Mundial '86",
@@ -22,13 +24,12 @@ const CategoriaView = () => {
   useEffect(() => {
     const fetchProductosCategoria = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/productos');
-        const data = await response.json();
-        const filtrados = data.filter(p => p.categoria === nombreCategoria);
+        const data = await productService.getProductos();
+        const filtrados = data.filter((p) => p.categoria === nombreCategoria);
         setProductosFiltrados(filtrados);
-        setLoading(false);
       } catch (error) {
-        console.error("Error al cargar:", error);
+        setError(error.message);
+      } finally {
         setLoading(false);
       }
     };
@@ -40,6 +41,14 @@ const CategoriaView = () => {
       <div className="loader-container">
         <GiSoccerBall size={48} className="balon-giratorio" />
         <p>Cargando la colección...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="home-container" style={{ paddingTop: '80px' }}>
+        <StatusAlert type="error" message={error} />
       </div>
     );
   }
@@ -80,10 +89,10 @@ const CategoriaView = () => {
                 <Link to={`/producto/${producto.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                   <h3 className="producto-equipo">{producto.equipo}</h3>
                 </Link>
-                <p className="producto-precio">{producto.precio.toFixed(2)} €</p>
-                <button className="btn-comprar" onClick={() => agregarAlCarrito(producto)}>
+                <p className="producto-precio">{Number(producto.precio).toFixed(2)} €</p>
+                <button className="btn-comprar" onClick={() => navigate(`/producto/${producto.id}`)}>
                   <FiShoppingCart style={{ marginRight: '6px', verticalAlign: 'middle' }} />
-                  Añadir al Carrito
+                  Elegir talla
                 </button>
               </div>
             </article>

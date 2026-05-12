@@ -8,7 +8,7 @@ import { FiShoppingBag } from 'react-icons/fi';
 
 const Navbar = () => {
   const { usuario, logout } = useContext(AuthContext);
-  const { carrito } = useContext(CartContext); // Ya no necesitamos totalPrecio aquí arriba
+  const { cantidadArticulos } = useContext(CartContext);
   const navigate = useNavigate();
   
   const location = useLocation(); 
@@ -63,9 +63,8 @@ const Navbar = () => {
             {/* ✅ NUEVO: Diseño Premium estilo Nike/Adidas */}
             <Link to="/carrito" className="cart-widget-premium">
               <FiShoppingBag className="cart-icon-premium" />
-              {/* Solo mostramos la burbuja si hay algo en el carrito */}
-              {carrito.length > 0 && (
-                <span className="cart-badge">{carrito.length}</span>
+              {cantidadArticulos > 0 && (
+                <span className="cart-badge">{cantidadArticulos}</span>
               )}
             </Link>
           </div>

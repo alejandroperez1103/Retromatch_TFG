@@ -1,56 +1,38 @@
-const API_URL = "http://localhost:8080/api/auth";
+import { apiFetch, getAuthToken, getStoredUser } from './apiClient';
 
-const login = async (email, password, codigoAdmin) => {
-    const response = await fetch(`${API_URL}/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, codigoAdmin }),
-    });
+const login = async (email, password) => {
+  const data = await apiFetch('/api/auth/login', {
+    method: 'POST',
+    body: JSON.stringify({ email, password }),
+  });
 
-    if (!response.ok) {
-        const errorMsg = await response.text();
-        throw new Error(errorMsg);
-    }
-    
-    const data = await response.json();
-    
-    // ¡NUEVO!: Si el backend nos da el token, lo guardamos en el navegador
-    if (data.token) {
-        localStorage.setItem('user', JSON.stringify(data));
-    }
-    
-    return data; 
+  if (data.token) {
+    localStorage.setItem('user', JSON.stringify(data));
+  }
+
+  return data;
 };
 
-const registro = async (email, password) => {
-    const response = await fetch(`${API_URL}/registro`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-    });
-
-    if (!response.ok) {
-        const errorMsg = await response.text();
-        throw new Error(errorMsg);
-    }
-    return response.text(); 
-};
+const registro = async (email, password, codigoAdmin) =>
+  apiFetch('/api/auth/registro', {
+    method: 'POST',
+    body: JSON.stringify({ email, password, codigoAdmin }),
+  });
 
 const logout = () => {
-    localStorage.removeItem('user');
+  localStorage.removeItem('user');
 };
 
-const getCurrentUser = () => {
-    const userStr = localStorage.getItem('user');
-    if (userStr) return JSON.parse(userStr);
-    return null;
-};
+const getCurrentUser = () => getStoredUser();
+
+const getToken = () => getAuthToken();
 
 const authService = {
-    login,
-    registro,
-    logout,
-    getCurrentUser,
+  login,
+  registro,
+  logout,
+  getCurrentUser,
+  getToken,
 };
 
 export default authService;

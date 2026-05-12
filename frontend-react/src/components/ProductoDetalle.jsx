@@ -1,7 +1,17 @@
-import { useState, useEffect, useContext } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { CartContext } from '../context/CartContext';
-import './ProductoDetalle.css'; 
+import { useState, useEffect, useContext } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { CartContext } from "../context/CartContext";
+import productService from "../services/productService";
+import StatusAlert from "./StatusAlert";
+import "./ProductoDetalle.css";
+
+const FALLBACK_TALLAS = ["S", "M", "L", "XL", "XXL"];
+
+const normalizar = (stockData) =>
+  stockData.map((s) => ({
+    ...s,
+    cantidadStock: s.cantidadStock ?? s.cantidad ?? 0,
+  }));
 
 const ProductoDetalle = () => {
   const { id } = useParams();
@@ -9,97 +19,143 @@ const ProductoDetalle = () => {
   const { agregarAlCarrito } = useContext(CartContext);
 
   const [producto, setProducto] = useState(null);
+  const [inventario, setInventario] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [imagenActiva, setImagenActiva] = useState('');
-  
-  // Estado para gestionar la talla seleccionada
-  const [tallaSeleccionada, setTallaSeleccionada] = useState('');
-
-  // Tallas disponibles (idealmente esto vendría de tu base de datos)
-  const tallasDisponibles = ['S', 'M', 'L', 'XL', 'XXL'];
+  const [imagenActiva, setImagenActiva] = useState("");
+  const [tallaSeleccionada, setTallaSeleccionada] = useState("");
+  const [feedback, setFeedback] = useState({ message: "", type: "info" });
+  const [error, setError] = useState("");
+  const [agregando, setAgregando] = useState(false);
 
   useEffect(() => {
     const fetchProducto = async () => {
+      setLoading(true);
+      setError("");
+
       try {
-        const token = localStorage.getItem('token');
-        const headers = { 'Content-Type': 'application/json' };
+        const [productoData, stockData] = await Promise.all([
+          productService.getProductoById(id),
+          productService.getStockProducto(id),
+        ]);
 
-        if (token && token !== 'null' && token !== 'undefined' && token.length > 20) {
-          headers['Authorization'] = `Bearer ${token}`;
-        }
-
-        const response = await fetch(`http://localhost:8080/api/productos/${id}`, {
-          method: 'GET',
-          headers: headers
-        });
-
-        if (!response.ok) throw new Error('Producto no encontrado');
-        
-        const data = await response.json();
-        setProducto(data);
-        
-        if (data.imagenes && data.imagenes.length > 0) {
-          setImagenActiva(data.imagenes[0]);
-        } else {
-          setImagenActiva("https://placehold.co/600x600?text=Sin+Imagen");
-        }
-        
-        setLoading(false);
-      } catch (error) {
-        console.error("Error en el detalle:", error);
+        setProducto(productoData);
+        setInventario(normalizar(stockData));
+        setImagenActiva(
+          productoData.imagenes && productoData.imagenes.length > 0
+            ? productoData.imagenes[0]
+            : "https://placehold.co/600x600?text=Sin+Imagen",
+        );
+      } catch (fetchError) {
+        setError(fetchError.message);
+      } finally {
         setLoading(false);
       }
     };
 
-    if (id) fetchProducto();
+    if (id) {
+      fetchProducto();
+    }
   }, [id]);
 
-  const handleAñadirAlCarrito = () => {
-    if (!tallaSeleccionada) {
-      alert("⚠️ Por favor, selecciona una talla antes de añadir el producto al carrito.");
-      return;
-    }
-    
-    agregarAlCarrito({ ...producto, talla: tallaSeleccionada });
-    alert(`✅ Añadido al carrito: ${producto.equipo} (Talla ${tallaSeleccionada})`);
-  };
-
-  if (loading) return (
-    <div className="detalle-loading">
-      <p>⏳ Cargando historia...</p>
-    </div>
+  const tallasDisponibles = (
+    inventario.length > 0
+      ? [...inventario]
+      : FALLBACK_TALLAS.map((talla) => ({ talla, cantidadStock: 0 }))
+  ).sort(
+    (a, b) =>
+      FALLBACK_TALLAS.indexOf(a.talla) - FALLBACK_TALLAS.indexOf(b.talla),
   );
 
-  if (!producto) return <div className="producto-detalle-container">❌ Producto no encontrado</div>;
+  const stockSeleccionado =
+    tallasDisponibles.find((item) => item.talla === tallaSeleccionada)
+      ?.cantidadStock ?? null;
+
+  const productoDisponible = tallasDisponibles.some(
+    (item) => item.cantidadStock > 0,
+  );
+
+  const handleAnadirAlCarrito = async () => {
+    setFeedback({ message: "", type: "info" });
+
+    if (!tallaSeleccionada) {
+      setFeedback({
+        message: "Selecciona una talla antes de anadir el articulo.",
+        type: "warning",
+      });
+      return;
+    }
+
+    try {
+      setAgregando(true);
+      await agregarAlCarrito(producto, tallaSeleccionada);
+      setFeedback({
+        message: `${producto.equipo} se ha reservado en talla ${tallaSeleccionada}.`,
+        type: "success",
+      });
+      // Refrescamos y normalizamos el stock tras comprar
+      const stockActualizado = await productService.getStockProducto(id);
+      setInventario(normalizar(stockActualizado));
+    } catch (cartError) {
+      setFeedback({ message: cartError.message, type: "error" });
+      if (cartError.message.toLowerCase().includes("iniciar sesion")) {
+        navigate("/login");
+      }
+    } finally {
+      setAgregando(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="detalle-loading">
+        <p>Cargando historia...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="producto-detalle-container">
+        <StatusAlert type="error" message={error} />
+      </div>
+    );
+  }
+
+  if (!producto) {
+    return (
+      <div className="producto-detalle-container">Producto no encontrado.</div>
+    );
+  }
 
   return (
     <div className="producto-detalle-container">
-      
-      {/* BOTÓN VOLVER MEJORADO */}
       <button className="btn-volver-catalogo" onClick={() => navigate(-1)}>
-        ⬅️ Volver al catálogo
+        Volver al catalogo
       </button>
 
       <div className="detalle-grid">
-        
-        {/* --- COLUMNA IZQUIERDA: IMÁGENES --- */}
         <div className="galeria-container">
           <div className="imagen-principal-box">
-            <img 
-              src={imagenActiva} 
-              alt={`${producto.equipo} ${producto.anio}`} 
-              className="imagen-principal" 
+            <img
+              src={imagenActiva}
+              alt={`${producto.equipo} ${producto.anio}`}
+              className="imagen-principal"
+              onError={(event) => {
+                event.target.onerror = null;
+                event.target.src =
+                  "https://placehold.co/600x600?text=Imagen+No+Disponible";
+              }}
             />
           </div>
-          
+
           {producto.imagenes && producto.imagenes.length > 1 && (
             <div className="miniaturas-lista">
               {producto.imagenes.map((img, index) => (
-                <img 
+                <img
                   key={index}
-                  src={img} 
+                  src={img}
                   alt={`Vista miniatura ${index + 1}`}
-                  className={`miniatura ${imagenActiva === img ? 'activa' : ''}`}
+                  className={`miniatura ${imagenActiva === img ? "activa" : ""}`}
                   onClick={() => setImagenActiva(img)}
                 />
               ))}
@@ -107,55 +163,95 @@ const ProductoDetalle = () => {
           )}
         </div>
 
-        {/* --- COLUMNA DERECHA: INFO --- */}
         <div className="info-container">
           <span className="detalle-categoria">{producto.categoria}</span>
           <h1 className="detalle-titulo">
-            {producto.equipo} <span style={{fontSize: '0.6em', color: '#666'}}>{producto.anio}</span>
+            {producto.equipo}{" "}
+            <span style={{ fontSize: "0.6em", color: "#666" }}>
+              {producto.anio}
+            </span>
           </h1>
-          
-          {/* SECCIÓN PRECIO MEJORADA */}
+
           <div className="precio-container">
             <div className="detalle-precio-wrapper">
-              <span className="detalle-precio">{producto.precio.toFixed(2)} €</span>
+              <span className="detalle-precio">
+                {Number(producto.precio).toFixed(2)} €
+              </span>
               <span className="precio-iva">IVA incluido</span>
             </div>
-            <div className="badge-stock">
-              🟢 En Stock
+            <div className={`badge-stock ${productoDisponible ? "disponible" : "agotado"}`}>
+              {productoDisponible ? "Stock disponible" : "Sin stock"}
             </div>
           </div>
 
-          {/* SECCIÓN TALLAS */}
           <div className="detalle-tallas">
-            <h3>📏 Selecciona tu talla</h3>
+            <h3>Selecciona tu talla</h3>
             <div className="tallas-grid">
-              {tallasDisponibles.map(talla => (
-                <button 
-                  key={talla}
-                  className={`btn-talla ${tallaSeleccionada === talla ? 'seleccionada' : ''}`}
-                  onClick={() => setTallaSeleccionada(talla)}
+              {tallasDisponibles.map((item) => (
+                <button
+                  key={item.talla}
+                  className={`btn-talla ${tallaSeleccionada === item.talla ? "seleccionada" : ""} ${item.cantidadStock < 1 ? "agotada" : ""}`}
+                  onClick={() => item.cantidadStock > 0 && setTallaSeleccionada(item.talla)}
+                  disabled={item.cantidadStock < 1}
+                  title={
+                    item.cantidadStock < 1
+                      ? "Sin stock disponible"
+                      : item.cantidadStock === 1
+                      ? "¡Última unidad!"
+                      : `Quedan ${item.cantidadStock} unidades`
+                  }
                 >
-                  {talla}
+                  {item.talla}
+                  {item.cantidadStock === 1 && item.cantidadStock > 0 && (
+                    <span className="badge-ultima">¡Última!</span>
+                  )}
                 </button>
               ))}
             </div>
           </div>
 
-          <button className="btn-comprar-gigante" onClick={handleAñadirAlCarrito}>
-            🛒 Añadir al carrito
+          {stockSeleccionado !== null && (
+            <StatusAlert
+              type={
+                stockSeleccionado === 0
+                  ? "warning"
+                  : stockSeleccionado === 1
+                  ? "warning"
+                  : "info"
+              }
+              message={
+                stockSeleccionado === 0
+                  ? `La talla ${tallaSeleccionada} esta agotada ahora mismo.`
+                  : stockSeleccionado === 1
+                  ? `¡Última unidad disponible en talla ${tallaSeleccionada}!`
+                  : `Quedan ${stockSeleccionado} unidades en la talla ${tallaSeleccionada}.`
+              }
+            />
+          )}
+
+          <StatusAlert message={feedback.message} type={feedback.type} />
+
+          <button
+            className="btn-comprar-gigante"
+            onClick={handleAnadirAlCarrito}
+            disabled={agregando || !productoDisponible}
+          >
+            {agregando ? "Reservando..." : "Anadir al carrito"}
           </button>
 
           <ul className="lista-garantias">
-            <li>✅ Autenticidad Garantizada</li>
-            <li>📦 Envío gratis en pedidos superiores a 100€</li>
-            <li>🛡️ Pago 100% seguro</li>
+            <li>Autenticidad garantizada</li>
+            <li>Envio gratis en pedidos superiores a 100 EUR</li>
+            <li>Pago seguro</li>
           </ul>
 
           <div className="detalle-descripcion">
-            <h3>📖 Historia de la prenda</h3>
-            <p>{producto.descripcionHistorica || "Una pieza de colección indispensable para cualquier amante del fútbol."}</p>
+            <h3>Historia de la prenda</h3>
+            <p>
+              {producto.descripcionHistorica ||
+                "Una pieza imprescindible para cualquier coleccionista del futbol retro."}
+            </p>
           </div>
-          
         </div>
       </div>
     </div>

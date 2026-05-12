@@ -2,37 +2,31 @@ import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import './AdminDashboard.css';
-// import CategoriaView from './CategoriaView'; // Asegúrate de usarlo si es necesario
 import { FiEdit2, FiTrash2, FiPlus, FiX, FiSave } from 'react-icons/fi';
 import { MdAdminPanelSettings } from 'react-icons/md';
+
+const TALLAS = ['S', 'M', 'L', 'XL', 'XXL'];
 
 const AdminDashboard = () => {
   const { usuario, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const [productos, setProductos] = useState([]);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
-  
-  // 1. AHORA INICIAMOS CON UN ARRAY DE IMÁGENES
-  const [productoActual, setProductoActual] = useState({ 
+  const [productoActual, setProductoActual] = useState({
     equipo: '', anio: '', precio: '', imagenes: [''], descripcionHistorica: '', categoria: ''
   });
+  const [stock, setStock] = useState(TALLAS.map(t => ({ talla: t, cantidad: 0 })));
 
   useEffect(() => {
     const cargarProductos = async () => {
       try {
         const response = await fetch('http://localhost:8080/api/productos', {
-          // AÑADIMOS LAS CABECERAS (HEADERS) AQUÍ
           headers: {
             'Authorization': `Bearer ${usuario.token}`,
             'Content-Type': 'application/json'
           }
         });
-        
-        // Buena práctica: comprobar que la respuesta fue bien antes de convertir a JSON
-        if (!response.ok) {
-          throw new Error(`Error de servidor: ${response.status}`);
-        }
-
+        if (!response.ok) throw new Error(`Error de servidor: ${response.status}`);
         const data = await response.json();
         setProductos(data);
       } catch (error) {
@@ -48,20 +42,31 @@ const AdminDashboard = () => {
   }, [usuario, navigate]);
 
   const handleNuevo = () => {
-    // 2. RESETEAMOS CON EL ARRAY
     setProductoActual({ equipo: '', anio: '', precio: '', imagenes: [''], descripcionHistorica: '', categoria: '' });
+    setStock(TALLAS.map(t => ({ talla: t, cantidad: 0 })));
     setMostrarFormulario(true);
   };
 
-  const handleEditar = (producto) => {
-    // 3. COMPATIBILIDAD HACIA ATRÁS: Si el producto antiguo solo tiene un String 'imagenUrl', lo convertimos a Array para editarlo
+  const handleEditar = async (producto) => {
     const imagenesArray = producto.imagenes ? producto.imagenes : (producto.imagenUrl ? [producto.imagenUrl] : ['']);
-    
     setProductoActual({ ...producto, imagenes: imagenesArray });
+
+    try {
+      const res = await fetch(`http://localhost:8080/api/productos/${producto.id}/stock`, {
+        headers: { 'Authorization': `Bearer ${usuario.token}` }
+      });
+      const stockData = await res.json();
+      setStock(TALLAS.map(t => {
+        const encontrado = stockData.find(s => s.talla === t);
+        return { talla: t, cantidad: encontrado ? encontrado.cantidad : 0 };
+      }));
+    } catch {
+      setStock(TALLAS.map(t => ({ talla: t, cantidad: 0 })));
+    }
+
     setMostrarFormulario(true);
   };
 
-  // --- FUNCIONES PARA MANEJAR LAS MÚLTIPLES IMÁGENES ---
   const handleImagenChange = (index, valor) => {
     const nuevasImagenes = [...productoActual.imagenes];
     nuevasImagenes[index] = valor;
@@ -78,7 +83,6 @@ const AdminDashboard = () => {
     const nuevasImagenes = productoActual.imagenes.filter((_, i) => i !== index);
     setProductoActual({ ...productoActual, imagenes: nuevasImagenes });
   };
-  // -----------------------------------------------------
 
   const handleGuardar = async (e) => {
     e.preventDefault();
@@ -89,9 +93,7 @@ const AdminDashboard = () => {
 
     const payload = {
       ...productoActual,
-      // Asegura tipos compatibles con backend/Jackson
       anio: Number(productoActual.anio),
-      // Evita mandar URLs vacías (no insertar filas "producto_imagenes" con "")
       imagenes: (productoActual.imagenes || [])
         .map((s) => (s ?? '').toString().trim())
         .filter((s) => s.length > 0),
@@ -106,7 +108,20 @@ const AdminDashboard = () => {
         },
         body: JSON.stringify(payload),
       });
+
       if (response.ok) {
+        const productoGuardado = await response.json();
+        const idProducto = productoActual.id || productoGuardado.id;
+
+        await fetch(`http://localhost:8080/api/productos/${idProducto}/stock`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${usuario.token}`
+          },
+          body: JSON.stringify(stock.map(s => ({ talla: s.talla, cantidad: s.cantidad })))
+        });
+
         alert('¡Camiseta guardada con éxito!');
         setMostrarFormulario(false);
         window.location.reload();
@@ -117,10 +132,8 @@ const AdminDashboard = () => {
           navigate('/login');
           return;
         }
-
         const bodyText = await response.text();
         alert(`Error al guardar (${response.status}).\n${bodyText}`);
-        console.error('Error backend al guardar:', response.status, bodyText);
       }
     } catch (error) {
       console.error("Error al guardar:", error);
@@ -174,44 +187,66 @@ const AdminDashboard = () => {
               <label>Precio (€)</label>
               <input type="number" step="0.01" placeholder="Ej: 89.99" value={productoActual.precio} onChange={(e) => setProductoActual({...productoActual, precio: parseFloat(e.target.value)})} required />
             </div>
-            
-            {/* NUEVA SECCIÓN DE IMÁGENES */}
+
+            {/* IMÁGENES */}
             <div className="form-group" style={{ gridColumn: 'span 2' }}>
               <label>IMÁGENES (URL) - Máximo 3</label>
               {productoActual.imagenes.map((url, index) => (
                 <div key={index} style={{ display: 'flex', gap: '10px', marginBottom: '10px', alignItems: 'center' }}>
-                  <input 
-                    type="text" 
-                    placeholder={`https://... (Vista ${index + 1})`} 
-                    value={url} 
-                    onChange={(e) => handleImagenChange(index, e.target.value)} 
+                  <input
+                    type="text"
+                    placeholder={`https://... (Vista ${index + 1})`}
+                    value={url}
+                    onChange={(e) => handleImagenChange(index, e.target.value)}
                     style={{ flex: 1 }}
-                    required={index === 0} // La primera imagen siempre es obligatoria
+                    required={index === 0}
                   />
                   {productoActual.imagenes.length > 1 && (
-                    <button 
-                      type="button" 
+                    <button
+                      type="button"
                       onClick={() => eliminarImagen(index)}
                       style={{ padding: '8px 12px', background: '#ffebee', color: '#c62828', border: '1px solid #ffcdd2', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
-                      title="Eliminar imagen"
                     >
                       <FiTrash2 />
                     </button>
                   )}
                 </div>
               ))}
-              
               {productoActual.imagenes.length < 3 && (
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   onClick={agregarImagen}
                   style={{ padding: '8px 12px', background: '#f5f5f5', color: '#333', border: '1px solid #ddd', borderRadius: '4px', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', fontSize: '13px', marginTop: '5px' }}
                 >
-                  <FiPlus style={{ marginRight: '5px' }}/> Añadir otra vista
+                  <FiPlus style={{ marginRight: '5px' }} /> Añadir otra vista
                 </button>
               )}
             </div>
 
+            {/* STOCK POR TALLAS */}
+            <div className="form-group" style={{ gridColumn: 'span 2' }}>
+              <label>STOCK POR TALLAS</label>
+              <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginTop: '4px' }}>
+                {stock.map((item, index) => (
+                  <div key={item.talla} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ fontWeight: '700', fontSize: '0.85rem', color: '#555', textTransform: 'uppercase' }}>{item.talla}</span>
+                    <input
+                      type="number"
+                      min="0"
+                      value={item.cantidad}
+                      onChange={(e) => {
+                        const nuevo = [...stock];
+                        nuevo[index] = { ...nuevo[index], cantidad: parseInt(e.target.value) || 0 };
+                        setStock(nuevo);
+                      }}
+                      style={{ width: '65px', textAlign: 'center', padding: '0.5rem', border: '1px solid #ccc', borderRadius: '6px', fontSize: '1rem' }}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* CATEGORÍA */}
             <div className="form-group description-group">
               <label>Categoría del Catálogo</label>
               <select value={productoActual.categoria} onChange={(e) => setProductoActual({...productoActual, categoria: e.target.value})} required className="admin-select">
@@ -223,10 +258,13 @@ const AdminDashboard = () => {
               </select>
             </div>
           </div>
-          <div className="form-group description-group" style={{marginTop: '1rem'}}>
+
+          {/* DESCRIPCIÓN */}
+          <div className="form-group description-group" style={{ marginTop: '1rem' }}>
             <label>Descripción Histórica</label>
             <textarea placeholder="Describe la historia..." value={productoActual.descripcionHistorica} onChange={(e) => setProductoActual({...productoActual, descripcionHistorica: e.target.value})} rows="4" required></textarea>
           </div>
+
           <div className="form-actions">
             <button type="button" className="btn-secondary" onClick={() => setMostrarFormulario(false)}>
               <FiX style={{ marginRight: '6px', verticalAlign: 'middle' }} />Cancelar

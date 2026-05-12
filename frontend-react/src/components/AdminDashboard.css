@@ -13,6 +13,14 @@
   padding-bottom: 1rem;
 }
 
+.admin-header h2 {
+  font-size: 2rem;
+  color: #1a1a1a;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
 .admin-table {
   width: 100%;
   border-collapse: collapse;
@@ -39,29 +47,21 @@
   gap: 10px;
 }
 
-.btn-edit { background: #ffcc00; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
-.btn-delete { background: #ff4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
-
-/* =========================================
-   ESTILO DEL FORMULARIO DE ADMIN
-   ========================================= */
-.admin-header {
-  display: flex;
-  justify-content: center; /* Centra el contenido horizontalmente */
-  align-items: center;
-  margin-bottom: 3rem;
-  border-bottom: 2px solid #eee;
-  padding-bottom: 1rem;
-  position: relative; /* Necesario para posicionar el botón a la derecha luego si hace falta */
+.btn-edit {
+  background: #ffcc00;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-/* Y le damos un poco de estilo al h2 dentro del header para que destaque */
-.admin-header h2 {
-  font-size: 2rem;
-  color: #1a1a1a;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin: 0;
+.btn-delete {
+  background: #ff4444;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .form-grid {
@@ -70,7 +70,6 @@
   gap: 1.5rem;
 }
 
-/* Agrupación de Label + Input para que queden apilados */
 .form-group {
   display: flex;
   flex-direction: column;
@@ -78,7 +77,6 @@
   text-align: left;
 }
 
-/* Estilo de los títulos de cada campo */
 .form-group label {
   font-weight: 700;
   font-size: 0.85rem;
@@ -87,14 +85,12 @@
   letter-spacing: 0.5px;
 }
 
-/* Para que la categoría y la descripción ocupen todo el ancho (las 2 columnas) */
 .description-group {
   grid-column: 1 / -1;
 }
 
-/* Estilo unificado para inputs, textareas y el nuevo select */
-.admin-form input, 
-.admin-form textarea, 
+.admin-form input,
+.admin-form textarea,
 .admin-select {
   padding: 0.8rem 1rem;
   border: 1px solid #ccc;
@@ -102,49 +98,48 @@
   font-family: inherit;
   font-size: 1rem;
   width: 100%;
-  box-sizing: border-box; /* VITAL para que no se salgan de su caja */
+  box-sizing: border-box;
   transition: border-color 0.3s;
 }
 
-.admin-form input:focus, 
-.admin-form textarea:focus, 
+.admin-form input:focus,
+.admin-form textarea:focus,
 .admin-select:focus {
   outline: none;
-  border-color: #ff3333; /* El rojo de tu marca al hacer clic */
+  border-color: #ff3333;
 }
 
 .admin-form textarea {
-  resize: vertical; /* Solo deja estirar la caja hacia abajo */
+  resize: vertical;
   min-height: 120px;
 }
 
 .form-actions {
   display: flex;
-  justify-content: flex-end; 
+  justify-content: flex-end;
+  align-items: center;
   gap: 1rem;
   margin-top: 1rem;
   border-top: 2px solid #eee;
   padding-top: 1.5rem;
 }
 
-.btn-primary,
-.btn-secondary {
-  width: 220px; /* ANCHO FIJO: Ni un píxel más, ni uno menos para ambos */
-  box-sizing: border-box; /* Evita que los márgenes deformen el botón */
-  text-align: center;
-  padding: 0.8rem 1rem;
+/* Botón genérico del header (Añadir Camiseta) */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0.7rem 1.4rem;
+  background: #ff3333;
+  color: white;
+  border: none;
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
   font-size: 1rem;
-  border: none;
-  transition: background 0.3s, transform 0.1s;
-}
-
-/* Colores de cada uno */
-.btn-primary {
-  background: #ff3333; 
-  color: white;
+  transition: background 0.3s;
+  box-sizing: border-box;
 }
 
 .btn-primary:hover {
@@ -152,10 +147,46 @@
 }
 
 .btn-secondary {
-  background: #e0e0e0; 
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0.7rem 1.4rem;
+  background: #e0e0e0;
   color: #333;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: background 0.3s;
+  box-sizing: border-box;
 }
 
 .btn-secondary:hover {
   background: #cccccc;
+}
+
+.form-actions .btn-primary,
+.form-actions .btn-secondary {
+  width: 200px;
+  height: 48px;
+  padding: 0;
+}
+
+.form-actions .btn-primary:hover,
+.form-actions .btn-secondary:hover {
+  transform: translateY(-2px);
+}
+
+.form-actions .btn-primary,
+.form-actions .btn-secondary {
+  width: 200px;
+  height: 48px;
+  padding: 0;
+  margin: 0;
+  line-height: 48px;
+  vertical-align: middle;
+  -webkit-appearance: none;
+  appearance: none;
 }

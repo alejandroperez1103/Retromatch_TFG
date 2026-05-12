@@ -1,6 +1,7 @@
-import { useState, useEffect, useContext } from 'react';
-import { CartContext } from '../context/CartContext.jsx';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import productService from '../services/productService';
+import StatusAlert from './StatusAlert';
 import './Home.css';
 import { FiShoppingCart } from 'react-icons/fi';
 import { GiSoccerBall } from 'react-icons/gi';
@@ -9,31 +10,16 @@ const Home = () => {
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  const { agregarAlCarrito } = useContext(CartContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProductos = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const headers = { 'Content-Type': 'application/json' };
-
-        if (token && token !== "null" && token !== "undefined") {
-          headers['Authorization'] = `Bearer ${token}`;
-        }
-
-        const response = await fetch('http://localhost:8080/api/productos', {
-          method: 'GET',
-          headers: headers
-        });
-
-        if (!response.ok) throw new Error('Error al cargar el catálogo');
-
-        const data = await response.json();
+        const data = await productService.getProductos();
         setProductos(data);
-        setLoading(false);
       } catch (err) {
         setError(err.message);
+      } finally {
         setLoading(false);
       }
     };
@@ -50,7 +36,13 @@ const Home = () => {
     );
   }
 
-  if (error) return <div className="estado-mensaje error">{error}</div>;
+  if (error) {
+    return (
+      <div className="home-container">
+        <StatusAlert type="error" message={error} />
+      </div>
+    );
+  }
 
   return (
     <div className="home-container">
@@ -95,11 +87,11 @@ const Home = () => {
                   <h3 className="producto-equipo">{producto.equipo}</h3>
                 </Link>
 
-                <p className="producto-precio">{producto.precio.toFixed(2)} €</p>
+                <p className="producto-precio">{Number(producto.precio).toFixed(2)} €</p>
 
-                <button className="btn-comprar" onClick={() => agregarAlCarrito(producto)}>
+                <button className="btn-comprar" onClick={() => navigate(`/producto/${producto.id}`)}>
                   <FiShoppingCart style={{ marginRight: '6px', verticalAlign: 'middle' }} />
-                  Añadir al Carrito
+                  Elegir talla
                 </button>
               </div>
             </article>

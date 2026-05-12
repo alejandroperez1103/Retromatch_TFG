@@ -134,23 +134,25 @@
     z-index: 5;
   }
   
-  /* Contenedor centralizado y relativo para aislar los botones */
-  .main-nav .container {
-    display: flex;
-    justify-content: center; /* CENTRADO PERFECTO DE CATEGORÍAS */
-    align-items: center;
-    width: 100%;
-    position: relative;
-    min-height: 55px; /* Altura fija para dar solidez */
-  }
-  
-  .navbar-links {
-    list-style: none;
-    display: flex;
-    gap: 1.5rem; /* Espaciado moderno entre enlaces */
-    margin: 0;
-    padding: 0;
-  }
+  /* Reserva espacio a la derecha para que los botones no tapen los enlaces */
+.main-nav .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  min-height: 55px;
+  padding-right: 280px; /* espacio reservado para los 2 botones */
+}
+
+/* Reducimos un poco el gap entre enlaces si hace falta */
+.navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+}
   
   /* Enlaces principales */
   .navbar-links a {
