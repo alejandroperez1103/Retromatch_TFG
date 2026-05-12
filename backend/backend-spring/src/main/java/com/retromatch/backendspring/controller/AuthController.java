@@ -1,21 +1,29 @@
 package com.retromatch.backendspring.controller;
 
+import com.retromatch.backendspring.dto.AuthResponse;
+import com.retromatch.backendspring.dto.LoginRequest;
+import com.retromatch.backendspring.dto.MessageResponse;
+import com.retromatch.backendspring.dto.RegistroRequest;
+import com.retromatch.backendspring.exception.BusinessException;
 import com.retromatch.backendspring.model.Usuario;
 import com.retromatch.backendspring.repository.UsuarioRepository;
 import com.retromatch.backendspring.security.JwtUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
 // ✅ CORREGIDO: eliminado @CrossOrigin — el CORS ya lo gestiona SecurityConfig globalmente
 public class AuthController {
+
+    private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -29,9 +37,9 @@ public class AuthController {
     private final String CLAVE_MAESTRA = "RETROMATCH_MASTER_26";
 
     @PostMapping("/registro")
-    public ResponseEntity<String> registrarUsuario(@RequestBody RegistroRequest request) {
+    public ResponseEntity<MessageResponse> registrarUsuario(@RequestBody RegistroRequest request) {
         if (usuarioRepository.findByEmail(request.getEmail()).isPresent()) {
-            return ResponseEntity.badRequest().body("Error: El email ya está registrado.");
+            throw new BusinessException("El email ya esta registrado.");
         }
 
         Usuario nuevoUsuario = new Usuario();
@@ -45,7 +53,10 @@ public class AuthController {
         }
 
         usuarioRepository.save(nuevoUsuario);
-        return ResponseEntity.ok("¡Usuario registrado con éxito en RetroMatch como " + nuevoUsuario.getRol() + "!");
+        log.info("Usuario registrado: email={}, rol={}", nuevoUsuario.getEmail(), nuevoUsuario.getRol());
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                new MessageResponse("Usuario registrado con exito en RetroMatch como " + nuevoUsuario.getRol() + ".")
+        );
     }
 
     @PostMapping("/login")
@@ -55,38 +66,13 @@ public class AuthController {
         if (usuarioOpt.isPresent() && passwordEncoder.matches(request.getPassword(), usuarioOpt.get().getPassword())) {
             Usuario user = usuarioOpt.get();
             String token = jwtUtil.generarToken(user.getEmail(), user.getRol());
+            log.info("Login correcto: email={}, rol={}", user.getEmail(), user.getRol());
 
-            return ResponseEntity.ok(Map.of(
-                    "mensaje", "¡Login exitoso!",
-                    "token", token,
-                    "rol", user.getRol(),
-                    "email", user.getEmail()
-            ));
+            return ResponseEntity.ok(new AuthResponse("Login exitoso.", token, user.getRol(), user.getEmail()));
         }
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas");
+        log.warn("Login fallido para {}", request.getEmail());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(new MessageResponse("Credenciales incorrectas."));
     }
-}
-
-class RegistroRequest {
-    private String email;
-    private String password;
-    private String codigoAdmin;
-
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
-    public String getCodigoAdmin() { return codigoAdmin; }
-    public void setCodigoAdmin(String codigoAdmin) { this.codigoAdmin = codigoAdmin; }
-}
-
-class LoginRequest {
-    private String email;
-    private String password;
-
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
 }

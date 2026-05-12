@@ -9,10 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface InventarioRepository extends JpaRepository<Inventario, Long> {
-
-    // Para ver todas las tallas y stock de una camiseta concreta
     List<Inventario> findByProductoId(Long productoId);
-
-    // Para buscar exactamente la camiseta y talla que el usuario quiere meter al carrito
+    void deleteByProductoId(Long productoId);
     Optional<Inventario> findByProductoIdAndTalla(Long productoId, String talla);
 }

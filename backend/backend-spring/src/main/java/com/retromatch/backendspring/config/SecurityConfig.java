@@ -1,9 +1,13 @@
 package com.retromatch.backendspring.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.retromatch.backendspring.dto.MessageResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import com.retromatch.backendspring.security.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,6 +31,8 @@ public class SecurityConfig {
     @Autowired
     private JwtFilter jwtFilter;
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -45,6 +51,22 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .authenticationEntryPoint((request, response, exception) -> {
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                            response.getWriter().write(objectMapper.writeValueAsString(
+                                    new MessageResponse("Debes iniciar sesion para continuar.")
+                            ));
+                        })
+                        .accessDeniedHandler((request, response, exception) -> {
+                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                            response.getWriter().write(objectMapper.writeValueAsString(
+                                    new MessageResponse("No tienes permisos para realizar esta accion.")
+                            ));
+                        })
+                )
                 .authorizeHttpRequests(auth -> auth
                         // 1. EL SALVAVIDAS: Permitir que el navegador pregunte por CORS (Preflight)
                         .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
