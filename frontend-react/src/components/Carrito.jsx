@@ -1,10 +1,10 @@
-import { useContext, useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext.jsx';
-import { CartContext } from '../context/CartContext.jsx';
-import StatusAlert from './StatusAlert';
-import { FiTrash2, FiShoppingBag, FiArrowLeft } from 'react-icons/fi';
-import './Carrito.css';
+import { useContext, useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext.jsx";
+import { CartContext } from "../context/CartContext.jsx";
+import StatusAlert from "./StatusAlert";
+import { FiTrash2, FiShoppingBag, FiArrowLeft } from "react-icons/fi";
+import "./Carrito.css";
 
 const Carrito = () => {
   const { usuario } = useContext(AuthContext);
@@ -20,8 +20,8 @@ const Carrito = () => {
   const navigate = useNavigate();
 
   const [timeLeft, setTimeLeft] = useState(0);
-  const [feedback, setFeedback] = useState({ message: '', type: 'info' });
-  const [procesando, setProcesando] = useState('');
+  const [feedback, setFeedback] = useState({ message: "", type: "info" });
+  const [procesando, setProcesando] = useState("");
 
   useEffect(() => {
     if (carrito.length === 0) {
@@ -40,7 +40,10 @@ const Carrito = () => {
       }
 
       const siguienteExpiracion = Math.min(...expiraciones);
-      const segundosRestantes = Math.max(0, Math.floor((siguienteExpiracion - Date.now()) / 1000));
+      const segundosRestantes = Math.max(
+        0,
+        Math.floor((siguienteExpiracion - Date.now()) / 1000),
+      );
       setTimeLeft(segundosRestantes);
     };
 
@@ -51,8 +54,10 @@ const Carrito = () => {
   }, [carrito]);
 
   const formatTime = (seconds) => {
-    const m = Math.floor(seconds / 60).toString().padStart(2, '0');
-    const s = (seconds % 60).toString().padStart(2, '0');
+    const m = Math.floor(seconds / 60)
+      .toString()
+      .padStart(2, "0");
+    const s = (seconds % 60).toString().padStart(2, "0");
     return `${m}:${s}`;
   };
 
@@ -60,30 +65,30 @@ const Carrito = () => {
   const total = totalPrecio + gastosEnvio;
 
   const handleEliminar = async (reservaId) => {
-    setFeedback({ message: '', type: 'info' });
+    setFeedback({ message: "", type: "info" });
     limpiarErrorCarrito();
     setProcesando(`eliminar-${reservaId}`);
 
     try {
       await eliminarDelCarrito(reservaId);
     } catch (error) {
-      setFeedback({ message: error.message, type: 'error' });
+      setFeedback({ message: error.message, type: "error" });
     } finally {
-      setProcesando('');
+      setProcesando("");
     }
   };
 
   const handleVaciar = async () => {
-    setFeedback({ message: '', type: 'info' });
+    setFeedback({ message: "", type: "info" });
     limpiarErrorCarrito();
-    setProcesando('vaciar');
+    setProcesando("vaciar");
 
     try {
       await vaciarCarrito();
     } catch (error) {
-      setFeedback({ message: error.message, type: 'error' });
+      setFeedback({ message: error.message, type: "error" });
     } finally {
-      setProcesando('');
+      setProcesando("");
     }
   };
 
@@ -124,7 +129,10 @@ const Carrito = () => {
 
   return (
     <div className="carrito-container">
-      <StatusAlert message={feedback.message || cartError} type={feedback.message ? feedback.type : 'error'} />
+      <StatusAlert
+        message={feedback.message || cartError}
+        type={feedback.message ? feedback.type : "error"}
+      />
       {timeLeft === 0 && (
         <StatusAlert
           message="La reserva esta a punto de expirar o ya ha expirado. Revisa el pedido antes de pagar."
@@ -134,7 +142,7 @@ const Carrito = () => {
 
       <div className="carrito-header">
         <h2>Tu Carrito</h2>
-        <div className={`timer-box ${timeLeft < 300 ? 'danger' : ''}`}>
+        <div className={`timer-box ${timeLeft < 300 ? "danger" : ""}`}>
           <span>Reserva de articulos:</span>
           <span className="timer">{formatTime(timeLeft)}</span>
         </div>
@@ -144,44 +152,51 @@ const Carrito = () => {
         {/* LISTA DE PRODUCTOS */}
         <div className="carrito-items">
           {carrito.map((item, index) => {
-            
-            // Lógica robusta para las imágenes (Igual que en el Home)
-            const imagenPrincipal = (item.imagenes && item.imagenes.length > 0) 
-              ? item.imagenes[0] 
-              : (item.imagenUrl || "https://placehold.co/300x300?text=Sin+Imagen");
+            const imagenPrincipal =
+              item.imagenes?.[0] ||
+              "https://placehold.co/300x300?text=Sin+Imagen";
 
             return (
               <div key={`${item.reservaId}-${index}`} className="cart-item">
                 <div className="cart-item-img-wrapper">
-                  <img 
-                    src={imagenPrincipal} 
-                    alt={item.equipo} 
+                  <img
+                    src={imagenPrincipal}
+                    alt={item.equipo}
                     onError={(e) => {
                       e.target.onerror = null;
-                      e.target.src = "https://placehold.co/300x300?text=Imagen+No+Disponible";
+                      e.target.src =
+                        "https://placehold.co/300x300?text=Imagen+No+Disponible";
                     }}
                   />
                 </div>
-                
+
                 <div className="cart-item-info">
                   <div className="cart-item-header">
                     <h3>{item.equipo}</h3>
-                    <p className="item-precio">{(item.precio * item.cantidad).toFixed(2)} €</p>
+                    <p className="item-precio">
+                      {(item.precio * item.cantidad).toFixed(2)} €
+                    </p>
                   </div>
                   <p className="item-season">Temporada {item.anio}</p>
-                  
+
                   <p className="item-talla">
-                    Talla: <strong>{item.talla || 'Unica'}</strong>
+                    Talla: <strong>{item.talla || "Unica"}</strong>
                   </p>
 
                   <div className="cart-item-actions">
-                    <button 
-                      className="btn-eliminar" 
+                    <button
+                      className="btn-eliminar"
                       onClick={() => handleEliminar(item.reservaId)}
                       title="Eliminar producto"
-                      disabled={procesando === `eliminar-${item.reservaId}` || procesando === 'vaciar'}
+                      disabled={
+                        procesando === `eliminar-${item.reservaId}` ||
+                        procesando === "vaciar"
+                      }
                     >
-                      <FiTrash2 /> {procesando === `eliminar-${item.reservaId}` ? 'Eliminando...' : 'Eliminar'}
+                      <FiTrash2 />{" "}
+                      {procesando === `eliminar-${item.reservaId}`
+                        ? "Eliminando..."
+                        : "Eliminar"}
                     </button>
                   </div>
                 </div>
@@ -194,29 +209,39 @@ const Carrito = () => {
         <div className="carrito-resumen-container">
           <div className="carrito-resumen">
             <h3>Resumen</h3>
-            
+
             <div className="resumen-fila">
               <span>Subtotal ({carrito.length} articulos)</span>
               <span>{totalPrecio.toFixed(2)} €</span>
             </div>
             <div className="resumen-fila">
               <span>Gastos de envio</span>
-              <span>{gastosEnvio === 0 ? 'Gratis' : `${gastosEnvio.toFixed(2)} €`}</span>
+              <span>
+                {gastosEnvio === 0 ? "Gratis" : `${gastosEnvio.toFixed(2)} €`}
+              </span>
             </div>
-            
+
             <div className="resumen-fila total">
               <span>Total a pagar</span>
               <span>{total.toFixed(2)} €</span>
             </div>
-            
+
             <p className="iva-incluido">IVA incluido</p>
 
-            <button className="btn-pagar" onClick={() => navigate('/checkout')} disabled={procesando !== ''}>
+            <button
+              className="btn-pagar"
+              onClick={() => navigate("/checkout")}
+              disabled={procesando !== ""}
+            >
               Finalizar Compra
             </button>
-            
-            <button className="btn-vaciar" onClick={handleVaciar} disabled={procesando !== ''}>
-              {procesando === 'vaciar' ? 'Vaciando...' : 'Vaciar Carrito'}
+
+            <button
+              className="btn-vaciar"
+              onClick={handleVaciar}
+              disabled={procesando !== ""}
+            >
+              {procesando === "vaciar" ? "Vaciando..." : "Vaciar Carrito"}
             </button>
           </div>
         </div>

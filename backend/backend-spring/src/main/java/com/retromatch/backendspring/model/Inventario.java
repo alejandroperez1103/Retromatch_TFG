@@ -13,7 +13,6 @@ public class Inventario {
 
     @ManyToOne
     @JoinColumn(name = "producto_id", nullable = false)
-    @JsonIgnoreProperties("imagenes")
     private Producto producto;
 
     @Column(nullable = false, length = 10)

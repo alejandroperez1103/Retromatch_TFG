@@ -291,3 +291,14 @@
       position: static;
     }
   }
+  .input-error {
+  border-color: #e53935 !important;
+  background-color: #fff5f5;
+}
+
+.error-msg {
+  display: block;
+  color: #e53935;
+  font-size: 0.78rem;
+  margin-top: 4px;
+}
