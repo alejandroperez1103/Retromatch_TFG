@@ -1,6 +1,7 @@
 package com.retromatch.backendspring.model;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "Inventario")
@@ -12,6 +13,7 @@ public class Inventario {
 
     @ManyToOne
     @JoinColumn(name = "producto_id", nullable = false)
+    @JsonIgnoreProperties("imagenes")
     private Producto producto;
 
     @Column(nullable = false, length = 10)

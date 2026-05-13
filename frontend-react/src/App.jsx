@@ -7,6 +7,7 @@ import AdminDashboard from './components/AdminDashboard';
 import CategoriaView from './components/CategoriaView';
 import Checkout from './components/Checkout';
 import ProductoDetalle from './components/ProductoDetalle';
+import MisPedidos from './components/MisPedidos.jsx';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/categoria/:nombreCategoria" element={<CategoriaView />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/producto/:id" element={<ProductoDetalle />} />
+          <Route path="/mis-pedidos" element={<MisPedidos />} />
         </Routes>
       </div>
     </>

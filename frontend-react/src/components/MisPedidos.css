@@ -1,0 +1,297 @@
+.mispedidos-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1.5rem 4rem;
+}
+
+.mispedidos-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.mispedidos-header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  flex: 1;
+  margin: 0;
+}
+
+.mispedidos-count {
+  background: #111;
+  color: #fff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.btn-back {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: none;
+  border: 1px solid #ddd;
+  padding: 0.4rem 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #555;
+  transition: all 0.2s;
+}
+
+.btn-back:hover {
+  background: #f5f5f5;
+  color: #111;
+}
+
+/* LISTA */
+.mispedidos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* CARD */
+.pedido-card {
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  transition: box-shadow 0.2s;
+}
+
+.pedido-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+.pedido-card-top {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.2rem 1.5rem;
+  cursor: pointer;
+  flex-wrap: wrap;
+}
+
+.pedido-info-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 160px;
+}
+
+.pedido-numero {
+  font-weight: 700;
+  font-size: 1rem;
+  font-family: 'Courier New', monospace;
+  color: #111;
+}
+
+.pedido-estado {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  width: fit-content;
+}
+
+.estado-pagado-y-preparando-envio {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.estado-pendiente {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.estado-enviado {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.estado-entregado {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.pedido-meta {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  align-items: center;
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.pedido-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.pedido-total {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #111;
+  margin-left: auto;
+}
+
+.btn-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #888;
+  font-size: 1.1rem;
+  padding: 0.2rem;
+  transition: color 0.2s;
+}
+
+.btn-toggle:hover {
+  color: #111;
+}
+
+/* DETALLES EXPANDIDOS */
+.pedido-detalles {
+  border-top: 1px solid #f0f0f0;
+  padding: 1.2rem 1.5rem;
+  background: #fafafa;
+  overflow-x: auto;
+}
+
+.detalles-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.detalles-tabla th {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 2px solid #e5e5e5;
+  font-weight: 600;
+  color: #555;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+.detalles-tabla td {
+  padding: 0.65rem 0.75rem;
+  border-bottom: 1px solid #efefef;
+  color: #333;
+}
+
+.detalles-tabla tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.detalles-tabla tfoot td {
+  padding-top: 0.75rem;
+  border-top: 2px solid #e5e5e5;
+}
+
+.tfoot-label {
+  text-align: right;
+  font-weight: 600;
+  color: #555;
+}
+
+.tfoot-total {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #111;
+}
+
+.sin-detalles {
+  color: #999;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+/* EMPTY / LOADING */
+.mispedidos-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  gap: 1rem;
+  text-align: center;
+  color: #555;
+}
+
+.mispedidos-empty h2 {
+  font-size: 1.4rem;
+  color: #111;
+  margin: 0;
+}
+
+.mispedidos-empty p {
+  margin: 0;
+  color: #777;
+}
+
+.mispedidos-empty-icon {
+  font-size: 3.5rem;
+  color: #ccc;
+}
+
+.mispedidos-error {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.mispedidos-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #eee;
+  border-top-color: #111;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.btn-volver {
+  background: #111;
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.2s;
+}
+
+.btn-volver:hover {
+  background: #333;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .pedido-card-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pedido-total {
+    margin-left: 0;
+  }
+
+  .detalles-tabla th:nth-child(4),
+  .detalles-tabla td:nth-child(4) {
+    display: none;
+  }
+}

@@ -3,7 +3,6 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext.jsx";
 import { CartContext } from "../context/CartContext.jsx";
 import "./Navbar.css";
-// ✅ NUEVO: Importamos la bolsa de compra elegante de Feather Icons
 import { FiShoppingBag } from 'react-icons/fi'; 
 
 const Navbar = () => {
@@ -60,7 +59,6 @@ const Navbar = () => {
           </Link>
 
           <div className="main-header-actions">
-            {/* ✅ NUEVO: Diseño Premium estilo Nike/Adidas */}
             <Link to="/carrito" className="cart-widget-premium">
               <FiShoppingBag className="cart-icon-premium" />
               {cantidadArticulos > 0 && (
@@ -81,6 +79,7 @@ const Navbar = () => {
               <li><Link to="/categoria/LaLiga">La Liga Classic</Link></li>
               <li><Link to="/categoria/Premier">Premier Legend</Link></li>
               <li><Link to="/categoria/Selecciones">Selecciones</Link></li>
+              <li><Link to="/mis-pedidos">Mis Pedidos</Link></li>
             </ul>
 
             <div className="nav-actions-group">

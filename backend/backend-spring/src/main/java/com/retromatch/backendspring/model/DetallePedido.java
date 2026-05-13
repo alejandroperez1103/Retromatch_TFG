@@ -2,6 +2,7 @@ package com.retromatch.backendspring.model;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "Detalle_Pedido")
@@ -13,6 +14,7 @@ public class DetallePedido {
 
     @ManyToOne
     @JoinColumn(name = "pedido_id", nullable = false)
+    @JsonIgnoreProperties("detalles")
     private Pedido pedido;
 
     @ManyToOne

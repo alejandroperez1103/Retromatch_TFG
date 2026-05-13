@@ -3,19 +3,23 @@ package com.retromatch.backendspring.security;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.util.Base64;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
 
-    // "Llave maestra" para firmar los tokens.
-    private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-
-    // Tiempo de validez del token: 24 horas
+    private final Key key;
     private static final long EXPIRATION_TIME = 86400000;
+
+    public JwtUtil(@Value("${jwt.secret}") String secret) {
+        byte[] keyBytes = Base64.getDecoder().decode(secret);
+        this.key = Keys.hmacShaKeyFor(keyBytes);
+    }
 
     public String generarToken(String email, String rol) {
         return Jwts.builder()
@@ -27,12 +31,11 @@ public class JwtUtil {
                 .compact();
     }
 
-    // Metodo para sacar el email que está guardado dentro del token
     public String extraerEmail(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parserBuilder().setSigningKey(key).build()
+                .parseClaimsJws(token).getBody().getSubject();
     }
 
-    // Metodo para comprobar si el token es falso, ha sido modificado o ha caducado
     public boolean validarToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);

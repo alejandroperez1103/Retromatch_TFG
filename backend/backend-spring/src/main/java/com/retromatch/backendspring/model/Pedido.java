@@ -2,6 +2,8 @@ package com.retromatch.backendspring.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Pedido")
@@ -28,6 +30,9 @@ public class Pedido {
     @Column(name = "fecha_creacion", updatable = false)
     private LocalDateTime fechaCreacion = LocalDateTime.now();
 
+    @OneToMany(mappedBy = "pedido", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<DetallePedido> detalles = new ArrayList<>();
+
     public Pedido() {}
 
     // Getters y Setters
@@ -43,4 +48,6 @@ public class Pedido {
     public void setDireccionEnvio(String direccionEnvio) { this.direccionEnvio = direccionEnvio; }
     public LocalDateTime getFechaCreacion() { return fechaCreacion; }
     public void setFechaCreacion(LocalDateTime fechaCreacion) { this.fechaCreacion = fechaCreacion; }
+    public List<DetallePedido> getDetalles() { return detalles; }
+    public void setDetalles(List<DetallePedido> detalles) { this.detalles = detalles; }
 }
