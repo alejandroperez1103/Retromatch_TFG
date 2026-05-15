@@ -17,10 +17,14 @@ const AdminDashboard = () => {
   });
   const [stock, setStock] = useState(TALLAS.map(t => ({ talla: t, cantidad: 0 })));
 
+  // Variable de entorno para conectar con tu backend en Render
+  const API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     const cargarProductos = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/productos', {
+        // ACTUALIZADO CON API_URL
+        const response = await fetch(`${API_URL}/api/productos`, {
           headers: {
             'Authorization': `Bearer ${usuario.token}`,
             'Content-Type': 'application/json'
@@ -39,7 +43,7 @@ const AdminDashboard = () => {
     } else {
       cargarProductos();
     }
-  }, [usuario, navigate]);
+  }, [usuario, navigate, API_URL]);
 
   const handleNuevo = () => {
     setProductoActual({ equipo: '', anio: '', precio: '', imagenes: [''], descripcionHistorica: '', categoria: '' });
@@ -52,7 +56,8 @@ const AdminDashboard = () => {
     setProductoActual({ ...producto, imagenes: imagenesArray });
 
     try {
-      const res = await fetch(`http://localhost:8080/api/productos/${producto.id}/stock`, {
+      // ACTUALIZADO CON API_URL
+      const res = await fetch(`${API_URL}/api/productos/${producto.id}/stock`, {
         headers: { 'Authorization': `Bearer ${usuario.token}` }
       });
       const stockData = await res.json();
@@ -87,9 +92,11 @@ const AdminDashboard = () => {
   const handleGuardar = async (e) => {
     e.preventDefault();
     const metodo = productoActual.id ? 'PUT' : 'POST';
+    
+    // ACTUALIZADO CON API_URL
     const url = productoActual.id
-      ? `http://localhost:8080/api/productos/${productoActual.id}`
-      : 'http://localhost:8080/api/productos';
+      ? `${API_URL}/api/productos/${productoActual.id}`
+      : `${API_URL}/api/productos`;
 
     const payload = {
       ...productoActual,
@@ -113,7 +120,8 @@ const AdminDashboard = () => {
         const productoGuardado = await response.json();
         const idProducto = productoActual.id || productoGuardado.id;
 
-        await fetch(`http://localhost:8080/api/productos/${idProducto}/stock`, {
+        // ACTUALIZADO CON API_URL
+        await fetch(`${API_URL}/api/productos/${idProducto}/stock`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -143,7 +151,8 @@ const AdminDashboard = () => {
   const handleBorrar = async (id) => {
     if (window.confirm('¿Seguro que quieres borrar esta camiseta legendaria?')) {
       try {
-        const response = await fetch(`http://localhost:8080/api/productos/${id}`, {
+        // ACTUALIZADO CON API_URL
+        const response = await fetch(`${API_URL}/api/productos/${id}`, {
           method: 'DELETE',
           headers: { 'Authorization': `Bearer ${usuario.token}` }
         });
