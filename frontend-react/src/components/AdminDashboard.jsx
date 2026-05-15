@@ -63,7 +63,7 @@ const AdminDashboard = () => {
       const stockData = await res.json();
       setStock(TALLAS.map(t => {
         const encontrado = stockData.find(s => s.talla === t);
-        return { talla: t, cantidad: encontrado ? encontrado.cantidadStock : 0 };
+        return { talla: t, cantidad: encontrado ? encontrado.cantidad : 0 };
       }));
     } catch {
       setStock(TALLAS.map(t => ({ talla: t, cantidad: 0 })));
