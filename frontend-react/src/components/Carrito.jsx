@@ -19,13 +19,13 @@ const Carrito = () => {
   } = useContext(CartContext);
   const navigate = useNavigate();
 
-  const [timeLeft, setTimeLeft] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(null);
   const [feedback, setFeedback] = useState({ message: "", type: "info" });
   const [procesando, setProcesando] = useState("");
 
   useEffect(() => {
     if (carrito.length === 0) {
-      setTimeLeft(0);
+      setTimeLeft(null);
       return;
     }
 
@@ -35,7 +35,7 @@ const Carrito = () => {
         .filter((value) => Number.isFinite(value));
 
       if (expiraciones.length === 0) {
-        setTimeLeft(0);
+        setTimeLeft(null);
         return;
       }
 
@@ -133,7 +133,7 @@ const Carrito = () => {
         message={feedback.message || cartError}
         type={feedback.message ? feedback.type : "error"}
       />
-      {timeLeft === 0 && (
+      {timeLeft !== null && timeLeft === 0 && (
         <StatusAlert
           message="La reserva esta a punto de expirar o ya ha expirado. Revisa el pedido antes de pagar."
           type="warning"
@@ -142,9 +142,11 @@ const Carrito = () => {
 
       <div className="carrito-header">
         <h2>Tu Carrito</h2>
-        <div className={`timer-box ${timeLeft < 300 ? "danger" : ""}`}>
+        <div className={`timer-box ${timeLeft !== null && timeLeft < 300 ? "danger" : ""}`}>
           <span>Reserva de articulos:</span>
-          <span className="timer">{formatTime(timeLeft)}</span>
+          <span className="timer">
+            {timeLeft !== null ? formatTime(timeLeft) : "--:--"}
+          </span>
         </div>
       </div>
 
