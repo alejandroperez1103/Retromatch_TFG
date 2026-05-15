@@ -8,12 +8,13 @@ import CategoriaView from './components/CategoriaView';
 import Checkout from './components/Checkout';
 import ProductoDetalle from './components/ProductoDetalle';
 import MisPedidos from './components/MisPedidos.jsx';
+import Footer from './components/Footer'; // Ajusta la ruta si es necesario
 
 function App() {
   return (
     <>
       <Navbar /> 
-      <div className="page-layout">
+      <main className="page-layout">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -24,7 +25,8 @@ function App() {
           <Route path="/producto/:id" element={<ProductoDetalle />} />
           <Route path="/mis-pedidos" element={<MisPedidos />} />
         </Routes>
-      </div>
+      </main>
+      <Footer />
     </>
   );
 }

@@ -1,243 +1,513 @@
 /* ==========================================================================
-   VARIABLES DE COLOR Y RESET
+   VARIABLES GLOBALES
    ========================================================================== */
-   :root {
-    --rm-red-vibrant: #D11D25;   
-    --rm-red-dark: #A1161D;       
-    --rm-black: #000000;         
-    --rm-white: #FFFFFF;         
-    --rm-grey-dark: #1a1a1a; /* Un gris un poco más profundo y elegante */
-    --rm-accent-gold: #FFD700;    
-  }
-  
-  .navbar-complete * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  }
-  
-  .navbar-complete .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 1rem;
-  }
-  
-  .navbar-complete a {
-    text-decoration: none;
-    transition: all 0.3s ease;
-  }
-  
-  /* ==========================================================================
-     1. PRE-HEADER (Barrita Superior Oscura)
-     ========================================================================== */
-  .pre-header {
-    background-color: var(--rm-grey-dark);
-    color: #ccc; /* Texto ligeramente atenuado para no robar atención */
-    padding: 0.6rem 0;
-    font-size: 0.75rem;
-    letter-spacing: 0.5px;
-  }
-  
-  .pre-header-right {
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
-  }
-  
-  .login-small-link {
-    color: var(--rm-white);
-    font-weight: 600;
-    text-transform: uppercase;
-  }
-  
-  .login-small-link:hover {
-    color: var(--rm-accent-gold);
-  }
-  
-  .user-info {
-    font-weight: 700;
-    color: var(--rm-accent-gold); 
-  }
-  
-  /* ==========================================================================
-     2. MAIN HEADER (Cinta Roja Principal)
-     ========================================================================== */
-  .main-header {
-    background-color: var(--rm-red-vibrant);
-    padding: 1.5rem 0;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.15);
-    position: relative;
-    z-index: 10;
-  }
-  
-  .navbar-logo {
-    color: var(--rm-white); 
-    font-size: 2.5rem;
-    font-weight: 900;
-    letter-spacing: -1.5px;
-    text-transform: uppercase;
-  }
-  
-  .navbar-logo:hover {
-    transform: scale(1.02);
-  }
-  
-  /* --- WIDGET DEL CARRITO PREMIUM (Estilo Minimalista) --- */
-  .cart-widget-premium {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--rm-white); 
-    padding: 0.5rem;
-    transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-  
-  .cart-widget-premium:hover {
-    transform: translateY(-3px); 
-  }
-  
-  .cart-icon-premium {
-    font-size: 1.8rem; 
-  }
-  
-  /* Burbuja de notificación estilo App Nativa */
-  .cart-badge {
-    position: absolute;
-    top: 2px;
-    right: -2px;
-    background-color: var(--rm-black); 
-    color: var(--rm-white);
-    font-size: 0.7rem;
-    font-weight: 800;
-    height: 20px;
-    min-width: 20px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 5px;
-    border: 2px solid var(--rm-red-vibrant); /* Se funde con el fondo rojo */
-  }
-  
-  /* ==========================================================================
-     3. MAIN NAV (Barra Negra Inferior)
-     ========================================================================== */
-  .main-nav {
-    background-color: var(--rm-black);
-    padding: 0;
-    position: relative;
-    z-index: 5;
-  }
-  
-  /* Reserva espacio a la derecha para que los botones no tapen los enlaces */
+:root {
+  --rm-red-vibrant: #D11D25;
+  --rm-red-dark: #A1161D;
+  --rm-black: #000000;
+  --rm-white: #FFFFFF;
+  --rm-grey-dark: #1a1a1a;
+  --rm-accent-gold: #FFD700;
+}
+
+.navbar-complete {
+  position: relative;
+  z-index: 999;
+}
+
+.navbar-complete .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+.navbar-complete a {
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+/* ==========================================================================
+   1. PRE-HEADER
+   ========================================================================== */
+.pre-header {
+  background-color: #0a0a0a;
+  color: #777;
+  padding: 0.55rem 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.6px;
+  border-bottom: 1px solid #1e1e1e;
+}
+
+.pre-header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pre-header-left,
+.pre-header-right {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.pre-header-left span {
+  color: #888;
+  letter-spacing: 0.3px;
+}
+
+.locale-selector {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: color 0.2s;
+  color: #777;
+  padding: 2px 8px;
+  border: 0.5px solid #2a2a2a;
+  border-radius: 4px;
+}
+
+.locale-selector:hover {
+  color: var(--rm-white);
+  border-color: #444;
+}
+
+.divider {
+  color: #2a2a2a;
+}
+
+.user-info {
+  color: #bbb;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.login-small-link {
+  color: #888;
+  transition: color 0.2s;
+}
+
+.login-small-link:hover {
+  color: var(--rm-white);
+}
+
+/* ==========================================================================
+   2. MAIN HEADER
+   ========================================================================== */
+.main-header {
+  background-color: var(--rm-red-vibrant);
+  padding: 1rem 0;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 10;
+}
+
+.main-header .container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar-logo {
+  color: var(--rm-white);
+  font-size: 2.4rem;
+  font-weight: 900;
+  letter-spacing: -1px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.navbar-logo:hover {
+  transform: scale(1.02);
+}
+
+.main-header-actions {
+  position: absolute;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cart-widget-premium {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--rm-white);
+  padding: 0.4rem;
+  transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.cart-widget-premium:hover {
+  transform: translateY(-3px);
+}
+
+.cart-icon-premium {
+  font-size: 1.5rem;
+}
+
+.cart-badge {
+  position: absolute;
+  top: 2px;
+  right: -2px;
+  background-color: var(--rm-black);
+  color: var(--rm-white);
+  font-size: 0.65rem;
+  font-weight: 800;
+  height: 18px;
+  min-width: 18px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border: 2px solid var(--rm-red-vibrant);
+}
+
+/* ==========================================================================
+   3. MAIN NAV
+   ========================================================================== */
+.main-nav {
+  background-color: #0d0d0d;
+  padding: 0;
+  position: relative;
+  z-index: 5;
+  border-bottom: 1px solid #1a1a1a;
+}
+
 .main-nav .container {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   position: relative;
-  min-height: 55px;
-  padding-right: 280px; /* espacio reservado para los 2 botones */
+  min-height: 52px;
+  padding-left: 1rem;
+  padding-right: 200px;
 }
 
-/* Reducimos un poco el gap entre enlaces si hace falta */
+.main-nav .container.has-admin {
+  padding-right: 320px;
+}
+
 .navbar-links {
   list-style: none;
   display: flex;
-  gap: 1rem;
+  gap: 0.2rem;
   margin: 0;
   padding: 0;
 }
-  
-  /* Enlaces principales */
-  .navbar-links a {
-    display: block;
-    padding: 1rem 0.5rem;
-    color: var(--rm-white);
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    letter-spacing: 1px;
-    position: relative; /* Necesario para la animación del subrayado */
-  }
-  
-  /* Animación de "Subrayado Mágico" (Efecto Nike/Zara) */
-  .navbar-links a::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: 12px;
-    left: 50%;
-    background-color: var(--rm-accent-gold);
-    transition: all 0.3s ease;
-    transform: translateX(-50%);
-  }
-  
-  .navbar-links a:hover::after {
-    width: 80%; /* Al pasar el ratón, la línea crece desde el centro */
-  }
-  
-  .navbar-links a:hover {
-    color: var(--rm-accent-gold);
-  }
-  
-  /* ==========================================================================
-     4. BOTONES DE ACCIÓN (Flotantes a la derecha)
-     ========================================================================== */
-  .nav-actions-group {
-    position: absolute; /* CLAVE: Aísla los botones del centrado de los enlaces */
-    right: 1rem;
+
+.navbar-links a {
+  display: block;
+  padding: 1rem 0.75rem;
+  color: #bbb;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  letter-spacing: 1.2px;
+  position: relative;
+  transition: color 0.2s;
+}
+
+.navbar-links a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 10px;
+  left: 50%;
+  background-color: var(--rm-red-vibrant);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.navbar-links a:hover::after {
+  width: 70%;
+}
+
+.navbar-links a:hover {
+  color: var(--rm-white);
+}
+
+/* ==========================================================================
+   4. BOTONES DE ACCIÓN
+   ========================================================================== */
+.nav-actions-group {
+  position: absolute;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-logout-small {
+  background-color: transparent;
+  color: #999;
+  border: 0.5px solid #333;
+  padding: 0.45rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.8px;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.btn-logout-small:hover {
+  background-color: var(--rm-red-vibrant);
+  color: var(--rm-white);
+  border-color: var(--rm-red-vibrant);
+}
+
+.admin-link {
+  color: #111 !important;
+  background-color: var(--rm-accent-gold);
+  font-weight: 800 !important;
+  border: none;
+  padding: 0.45rem 1rem;
+  border-radius: 4px;
+  transition: all 0.25s ease;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.8px;
+  white-space: nowrap;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.15);
+}
+
+.admin-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+}
+
+/* ==========================================================================
+   5. BOTÓN HAMBURGUESA
+   ========================================================================== */
+.mobile-menu-btn {
+  display: none;
+  background: transparent;
+  color: var(--rm-white);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.mobile-menu-btn:hover {
+  color: var(--rm-accent-gold);
+}
+
+/* ==========================================================================
+   6. RESPONSIVE
+   ========================================================================== */
+@media (max-width: 900px) {
+  .mobile-menu-btn {
     display: flex;
-    align-items: center;
-    gap: 1rem; 
   }
-  
-  /* Botón Logout (Píldora minimalista) */
-  .btn-logout-small {
-    background-color: transparent;
-    color: var(--rm-red-vibrant);
-    border: 1px solid var(--rm-red-vibrant);
-    padding: 0.5rem 1.2rem;
-    border-radius: 20px; /* Estilo moderno */
-    cursor: pointer;
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 0.75rem;
-    letter-spacing: 0.5px;
-    transition: all 0.3s ease;
-    white-space: nowrap;
+
+  /* Pre-header: mostramos todo pero más compacto */
+  .pre-header {
+    font-size: 0.68rem;
+    padding: 0.4rem 0;
   }
-  
-  .btn-logout-small:hover {
-    background-color: var(--rm-red-vibrant);
-    color: var(--rm-white);
-    box-shadow: 0 4px 12px rgba(209, 29, 37, 0.2);
+
+  .pre-header-left {
+    display: flex; /* ← antes estaba oculto, ahora lo mostramos */
+    gap: 0.5rem;
   }
-  
-  /* Botón Admin (Píldora destacada) */
+
+  .pre-header .container {
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .pre-header-right {
+    gap: 0.6rem;
+  }
+
+  .locale-selector {
+    padding: 2px 5px;
+  }
+
+  /* Logo más pequeño en móvil */
+  .navbar-logo {
+    font-size: 1.6rem;
+    letter-spacing: 0px;
+  }
+
+  /* Header menos alto en móvil */
+  .main-header {
+    padding: 0.75rem 0;
+  }
+
+  /* Carrito e icono hamburguesa más pequeños */
+  .cart-icon-premium {
+    font-size: 1.3rem;
+  }
+
+  .main-header-actions {
+    gap: 0.6rem;
+  }
+
+  .main-nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #0d0d0d;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+  }
+
+  .main-nav.mobile-active {
+    max-height: 600px;
+  }
+
+  .main-nav .container,
+  .main-nav .container.has-admin {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.5rem;
+    min-height: auto;
+  }
+
+  .navbar-links {
+    flex-direction: column;
+    width: 100%;
+    gap: 0;
+  }
+
+  .navbar-links a {
+    width: 100%;
+    padding: 0.9rem 0;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #1a1a1a;
+    color: #ccc;
+  }
+
+  .navbar-links a::after {
+    display: none;
+  }
+
+  .nav-actions-group {
+    position: static;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 1.5rem;
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+
+  .btn-logout-small,
   .admin-link {
-    color: #111 !important;
-    background-color: var(--rm-accent-gold);
-    font-weight: 800 !important;
-    border: none;
-    padding: 0.5rem 1.2rem;
-    border-radius: 20px;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    font-size: 0.75rem;
-    letter-spacing: 0.5px;
-    white-space: nowrap;
-    text-decoration: none;
-    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.2);
+    width: 100%;
+    text-align: center;
+    padding: 0.9rem;
+    border-radius: 4px;
   }
-  
-  .admin-link:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+}
+
+@media (max-width: 900px) {
+  .pre-header {
+    display: none; /* ← ocultamos todo el pre-header en móvil */
   }
+
+  .mobile-menu-btn {
+    display: flex;
+  }
+
+  .navbar-logo {
+    font-size: 1.6rem;
+    letter-spacing: 0px;
+  }
+
+  .main-header {
+    padding: 0.75rem 0;
+  }
+
+  .cart-icon-premium {
+    font-size: 1.3rem;
+  }
+
+  .main-header-actions {
+    gap: 0.6rem;
+  }
+
+  .main-nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #0d0d0d;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+  }
+
+  .main-nav.mobile-active {
+    max-height: 600px;
+  }
+
+  .main-nav .container,
+  .main-nav .container.has-admin {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.5rem;
+    min-height: auto;
+  }
+
+  .navbar-links {
+    flex-direction: column;
+    width: 100%;
+    gap: 0;
+  }
+
+  .navbar-links a {
+    width: 100%;
+    padding: 0.9rem 0;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #1a1a1a;
+    color: #ccc;
+  }
+
+  .navbar-links a::after {
+    display: none;
+  }
+
+  .nav-actions-group {
+    position: static;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 1.5rem;
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+
+  .btn-logout-small,
+  .admin-link {
+    width: 100%;
+    text-align: center;
+    padding: 0.9rem;
+    border-radius: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-logo {
+    font-size: 1.4rem;
+  }
+}

@@ -302,3 +302,25 @@
   font-size: 0.78rem;
   margin-top: 4px;
 }
+
+@media (max-width: 600px) {
+  /* Las tarjetas de pago y resumen necesitan menos relleno interno en móvil */
+  .checkout-card, 
+  .checkout-summary {
+    padding: 1.5rem;
+  }
+
+  .checkout-header-title h2 {
+    font-size: 1.3rem;
+  }
+
+  /* Poner Expiración y CVC en una sola columna para que no se corten */
+  .form-grid-pago {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .checkout-wrapper {
+    gap: 1.5rem;
+  }
+}

@@ -1,10 +1,10 @@
-/* --- Banner Hero Premium (Altura optimizada y letras libres) --- */
+/* --- Banner Hero Premium --- */
 .hero-section {
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.7)), 
               url('https://i.redd.it/quais-s%C3%A3o-as-fotos-mais-ic%C3%B4nicas-da-hist%C3%B3ria-do-futebol-v0-1187ndajfq5f1.jpg?width=2048&format=pjpg&auto=webp&s=6572be69f1eec9d6ae36daa60c5a59696cbb8a30'); 
   background-size: cover;
   background-position: center 25%;
-  background-attachment: fixed;
+  background-attachment: scroll; /* ← era fixed, en móvil causa bugs visuales */
   min-height: 55vh; 
   padding: 2rem 1rem;
   display: flex;
@@ -47,8 +47,9 @@
 /* --- Títulos de Sección --- */
 .section-title {
   text-align: center;
-  margin-top: 4rem;
-  margin-bottom: 4rem;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  padding: 0 1rem;
 }
 
 .section-title h2 {
@@ -67,20 +68,19 @@
 }
 
 /* =========================================
-   NUEVO GRID DE PRODUCTOS (Perfectamente alineado)
+   GRID DE PRODUCTOS
    ========================================= */
-
 .productos-grid {
   display: grid;
-  /* El minmax(320px) asegura que caben entre 2 y 3 tarjetas en pantallas grandes */
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 2.5rem;
-  padding-bottom: 6rem;
-  max-width: 1200px; /* Mismo ancho que el header para mantener proporción */
-  margin: 0 auto;    /* Centra la cuadrícula en la pantalla */
+  padding-bottom: 3rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-/* La tarjeta: Estructura Flex para empujar el botón abajo */
 .producto-card {
   background: var(--rm-white, #ffffff);
   border-radius: 12px;
@@ -97,30 +97,27 @@
   box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
 
-/* EL SECRETO DE LAS IMÁGENES: Altura fija + Object-fit Contain */
 .producto-imagen {
   width: 100%;
-  height: 280px; /* Mantenemos la altura fija para que las tarjetas sigan alineadas */
-  background-color: #f8f8f8; /* Un fondo gris claro ayuda si la imagen no llena todo el espacio */
+  height: 280px;
+  background-color: #f8f8f8;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1rem; /* Añadimos un poco de 'aire' alrededor de la camiseta */
+  padding: 1rem;
 }
 
 .producto-imagen img {
   width: 100%;
   height: 100%;
-  /* CAMBIO CLAVE AQUÍ: 'contain' asegura que la imagen entera sea visible, sin recortes */
   object-fit: contain; 
 }
 
-/* Contenedor de la información: Flex-grow empuja el contenido */
 .producto-info {
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  flex-grow: 1; /* Esto hace que el contenedor crezca y empuje el botón al fondo */
+  flex-grow: 1;
 }
 
 .producto-anio {
@@ -140,7 +137,6 @@
   line-height: 1.2;
 }
 
-/* Precio: margin-top: auto lo pega justo encima del botón */
 .producto-precio {
   font-size: 1.5rem;
   font-weight: 900;
@@ -149,7 +145,6 @@
   margin-bottom: 1.5rem;
 }
 
-/* Botón de comprar adaptado al nuevo diseño */
 .btn-comprar {
   background-color: var(--rm-black, #1a1a1a);
   color: white;
@@ -168,7 +163,7 @@
   transform: scale(1.02);
 }
 
-/* --- Estado Vacío (Empty State) --- */
+/* --- Estado Vacío --- */
 .sin-productos {
   grid-column: 1 / -1; 
   background: var(--rm-white, #ffffff);
@@ -195,21 +190,20 @@
 }
 
 /* =========================================
-   ANIMACIÓN DE CARGA (LOADING)
+   LOADING
    ========================================= */
 .loader-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 50vh; /* Ocupa al menos la mitad de la pantalla para verse centrado */
+  min-height: 50vh;
   gap: 1rem;
 }
 
 .balon-giratorio {
-  font-size: 4rem; /* Tamaño del balón */
+  font-size: 4rem;
   display: inline-block;
-  /* La magia del giro: 1.5 segundos, velocidad constante, repetición infinita */
   animation: girarBalon 1.5s linear infinite; 
 }
 
@@ -221,12 +215,70 @@
   margin: 0;
 }
 
-/* Los "fotogramas" de la animación: de 0 a 360 grados */
 @keyframes girarBalon {
-  from {
-    transform: rotate(0deg);
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+/* Tablets */
+@media (max-width: 900px) {
+  .productos-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
   }
-  to {
-    transform: rotate(360deg);
+}
+
+/* Móvil */
+@media (max-width: 600px) {
+  .hero-section {
+    min-height: 45vh;
+    padding: 2rem 1rem;
+  }
+
+  .hero-content h1 {
+    font-size: 2.4rem;
+    letter-spacing: 1px;
+  }
+  
+  .hero-content p {
+    font-size: 1rem;
+  }
+
+  .section-title {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .section-title h2 {
+    font-size: 1.8rem;
+  }
+
+  /* Una sola columna en móvil */
+  .productos-grid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .producto-imagen {
+    height: 220px;
+  }
+
+  .producto-equipo {
+    font-size: 1.2rem;
+  }
+
+  .producto-precio {
+    font-size: 1.3rem;
+  }
+
+  .btn-comprar {
+    padding: 0.85rem;
+    font-size: 0.95rem;
   }
 }

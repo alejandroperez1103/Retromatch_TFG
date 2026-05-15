@@ -38,10 +38,19 @@ body {
 }
 
 #root {
-  width: 100%; 
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+.page-layout {
+  flex: 1;
+  padding-bottom: 4rem;
+}
+
+main {
+  flex: 1;
+  padding-bottom: 3rem; /* ← espacio entre contenido y footer */
 }
 
 /* Títulos con personalidad deportiva y en mayúsculas */
