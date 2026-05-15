@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext.jsx";
 import { CartContext } from "../context/CartContext.jsx";
@@ -19,47 +19,8 @@ const Carrito = () => {
   } = useContext(CartContext);
   const navigate = useNavigate();
 
-  const [timeLeft, setTimeLeft] = useState(null);
   const [feedback, setFeedback] = useState({ message: "", type: "info" });
   const [procesando, setProcesando] = useState("");
-
-  useEffect(() => {
-    if (carrito.length === 0) {
-      setTimeLeft(null);
-      return;
-    }
-
-    const actualizarTiempo = () => {
-      const expiraciones = carrito
-        .map((item) => new Date(item.fechaExpiracion).getTime())
-        .filter((value) => Number.isFinite(value));
-
-      if (expiraciones.length === 0) {
-        setTimeLeft(null);
-        return;
-      }
-
-      const siguienteExpiracion = Math.min(...expiraciones);
-      const segundosRestantes = Math.max(
-        0,
-        Math.floor((siguienteExpiracion - Date.now()) / 1000),
-      );
-      setTimeLeft(segundosRestantes);
-    };
-
-    actualizarTiempo();
-    const timerId = setInterval(actualizarTiempo, 1000);
-
-    return () => clearInterval(timerId);
-  }, [carrito]);
-
-  const formatTime = (seconds) => {
-    const m = Math.floor(seconds / 60)
-      .toString()
-      .padStart(2, "0");
-    const s = (seconds % 60).toString().padStart(2, "0");
-    return `${m}:${s}`;
-  };
 
   const gastosEnvio = totalPrecio > 100 || totalPrecio === 0 ? 0 : 4.99;
   const total = totalPrecio + gastosEnvio;
@@ -133,21 +94,9 @@ const Carrito = () => {
         message={feedback.message || cartError}
         type={feedback.message ? feedback.type : "error"}
       />
-      {timeLeft !== null && timeLeft === 0 && (
-        <StatusAlert
-          message="La reserva esta a punto de expirar o ya ha expirado. Revisa el pedido antes de pagar."
-          type="warning"
-        />
-      )}
 
       <div className="carrito-header">
         <h2>Tu Carrito</h2>
-        <div className={`timer-box ${timeLeft !== null && timeLeft < 300 ? "danger" : ""}`}>
-          <span>Reserva de articulos:</span>
-          <span className="timer">
-            {timeLeft !== null ? formatTime(timeLeft) : "--:--"}
-          </span>
-        </div>
       </div>
 
       <div className="carrito-content">
@@ -207,7 +156,7 @@ const Carrito = () => {
           })}
         </div>
 
-        {/* RESUMEN DEL PEDIDO (Sticky) */}
+        {/* RESUMEN DEL PEDIDO */}
         <div className="carrito-resumen-container">
           <div className="carrito-resumen">
             <h3>Resumen</h3>

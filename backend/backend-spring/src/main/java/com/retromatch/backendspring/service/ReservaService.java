@@ -62,7 +62,7 @@ public class ReservaService {
         reserva.setUsuario(usuario);
         reserva.setInventario(inventario);
         reserva.setCantidad(cantidad);
-        reserva.setFechaExpiracion(LocalDateTime.now().plusMinutes(15));
+        reserva.setFechaExpiracion(LocalDateTime.now().plusDays(30));
 
         ReservaCarrito reservaGuardada = reservaRepository.save(reserva);
         log.info(
